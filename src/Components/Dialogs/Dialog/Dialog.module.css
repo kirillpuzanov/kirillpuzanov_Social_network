@@ -1,0 +1,14 @@
+.user_dialog_item{
+    display: block;
+    padding: 10px 0 10px;
+
+}
+.user_dialog_item a{
+    color: crimson;
+    text-decoration: none;
+}
+.user_dialog_item a:hover{
+    transition: all 0.5s;
+    margin-left: 10px;
+}
+

@@ -1,0 +1,10 @@
+
+.Header {
+    grid-area: h;
+    background-color: azure ;
+}
+
+.Header img {
+    width: 40px;
+    margin: 10px 0 10px 30px;
+}
