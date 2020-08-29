@@ -1,62 +1,26 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
 import * as serviceWorker from './serviceWorker';
 
+import ReactDOM from "react-dom";
+import App from "./App";
+import React from "react";
+import {store} from "./redux/redux-store";
+import {stateType} from "./redux/store";
 
-export type postsDataPropsType = Array<objPostsDataType>
-export type dialogsDataPropsType = Array<objDialogsDataPropsType>
-export type messageDataPropsType = Array<objMessageDataPropsType>
+const renderThree = (state: stateType) => {
 
-export type AppPropsType = {
-    dialogsData: dialogsDataPropsType
-    messageData: messageDataPropsType
-    postsData: postsDataPropsType
+    ReactDOM.render(
+        <App
+            store={store}
+            // dispatch={store.dispatch.bind(store)}
+        />, document.getElementById('root')
+    )
 }
 
-type objPostsDataType = {
-    id: number
-    message: string
-    likes: number
-}
-type  objDialogsDataPropsType = {
-    id: number
-    name: string
-}
-type objMessageDataPropsType = {
-    id: number
-    text: string
-}
+renderThree(store.getState())
+store.subscribe(() => {
+    let state = store.getState();
+    renderThree(state);
+});
 
-export let postsData = [
-    {id: 1, message: 'Hi, how are you?', likes: 7},
-    {id: 1, message: 'Hi, how are you?', likes: 7},
-    {id: 2, message: 'Hallo, i am fine!', likes: 10}
-]
-
-export let dialogsData = [
-    {id: 1, name: 'Sasha'},
-    {id: 2, name: 'Masha'},
-    {id: 3, name: 'Dasha'},
-    {id: 4, name: 'Kirill'},
-    {id: 5, name: 'Stas'}
-]
-export let messageData = [
-    {id: 1, text: 'hi'},
-    {id: 2, text: 'hello'},
-    {id: 3, text: 'goodbye!'}
-
-]
-
-
-ReactDOM.render(<App postsData={postsData} dialogsData={dialogsData}
-                     messageData={messageData}/>, document.getElementById('root')
-)
-
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister();
 

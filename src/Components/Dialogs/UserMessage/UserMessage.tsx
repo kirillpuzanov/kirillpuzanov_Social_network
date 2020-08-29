@@ -3,7 +3,7 @@ import s from './UserMessage.module.css';
 
 type UserMessagePropsType = {
     text: string
-    id:number
+    id:string
 }
 export const UserMessage = (props: UserMessagePropsType) => {
     return (

@@ -29,6 +29,11 @@ export function NavBar() {
                     Sattings
                 </NavLink>
             </div>
+            <div className={s.item}>
+                <NavLink to="/friends" activeClassName={s.activeLink}>
+                    My Friends
+                </NavLink>
+            </div>
         </nav>
     )
 }

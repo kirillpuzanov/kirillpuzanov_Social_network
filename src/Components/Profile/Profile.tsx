@@ -1,11 +1,15 @@
 import React from 'react';
 import c from './ProFile.module.css';
-import {MyPosts} from "./MyPosts/MyPosts";
 import {ProfileInfo} from "./ProfileInfo/ProfileInfo";
-import {postsDataPropsType} from "../../index";
+import {MyPostsContainer} from "./MyPosts/MyPostsContainer";
+import {storeType} from "../../redux/redux-store";
 
-export type ProfilePropsType = {
-    postsData: postsDataPropsType
+
+type ProfilePropsType = {
+  /*  postsData: Array<objPostType>
+    newPostText: string
+    dispatch: (action: ActionsTypes) => void*/
+    store:storeType
 }
 
 export function Profile(props: ProfilePropsType) {
@@ -13,8 +17,9 @@ export function Profile(props: ProfilePropsType) {
     return (
         <div className={c.profile}>
             <ProfileInfo/>
-            <MyPosts postsData={props.postsData} />
-
+            <MyPostsContainer
+                store={props.store}
+            />
         </div>
     )
 }
