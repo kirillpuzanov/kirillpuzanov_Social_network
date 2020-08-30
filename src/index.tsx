@@ -5,14 +5,18 @@ import App from "./App";
 import React from "react";
 import {store} from "./redux/redux-store";
 import {stateType} from "./redux/store";
+import {StoreContext} from "./StoreContext";
 
 const renderThree = (state: stateType) => {
 
     ReactDOM.render(
+        <StoreContext.Provider value={store}>
         <App
-            store={store}
+            // store={store}
             // dispatch={store.dispatch.bind(store)}
-        />, document.getElementById('root')
+        />
+        </StoreContext.Provider>
+        , document.getElementById('root')
     )
 }
 

@@ -9,7 +9,7 @@ type ProfilePropsType = {
   /*  postsData: Array<objPostType>
     newPostText: string
     dispatch: (action: ActionsTypes) => void*/
-    store:storeType
+    // store:storeType
 }
 
 export function Profile(props: ProfilePropsType) {
@@ -18,7 +18,7 @@ export function Profile(props: ProfilePropsType) {
         <div className={c.profile}>
             <ProfileInfo/>
             <MyPostsContainer
-                store={props.store}
+                // store={props.store}
             />
         </div>
     )

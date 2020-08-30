@@ -12,13 +12,13 @@ import {Friends} from "./Components/Friends/Friends";
 import {DialogsContainer} from "./Components/Dialogs/DialogsContainer";
 
 type appPropsType = {
-    store: storeType
+    // store: storeType
 }
 
 
 function App(props: appPropsType) {
 
-    const state = props.store.getState();
+    // const state = props.store.getState();
     return (
         <BrowserRouter>
             <div className='App_wrapper'>
@@ -30,20 +30,20 @@ function App(props: appPropsType) {
                                /*postsData={state.profilePage.postsData}
                                newPostText={state.profilePage.newPostText}
                                dispatch={props.store.dispatch.bind(props.store)}*/
-                               store={props.store}
+                               // store={props.store}
                            />}
                     />
                     <Route path={'/dialogs'}
                            render={() => <DialogsContainer
-                               store={props.store}/>
+                               // store={props.store}
                                // messagesData={state.messagesPage.messagesData}
                                // dialogsData={state.messagesPage.dialogsData}
-                           }
+                           />}
                     />
                     <Route render={() => <News/>} path={'/news'}/>
                     <Route render={() => <Music/>} path={'/music'}/>
                     <Route render={() => <Sattings/>} path={'/sattings'}/>
-                    <Route render={() => <Friends myFriends={state.sideBar.myFriends}/>} path={'/friends'}/>
+                    {/*<Route render={() => <Friends myFriends={state.sideBar.myFriends}/>} path={'/friends'}/>*/}
                 </div>
             </div>
         </BrowserRouter>
