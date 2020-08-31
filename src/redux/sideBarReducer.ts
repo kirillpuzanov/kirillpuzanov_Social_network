@@ -1,10 +1,13 @@
-import {ActionsTypes, objMyFriendType} from "./store";
+
 import {v1} from "uuid";
+/*
 
 type navBarPageType = {
     myFriends:Array<objMyFriendType>
 }
+*/
 
+/*
 let initialState = {
     myFriends: [
         {id: v1(), name: 'Victor'},
@@ -17,4 +20,4 @@ export const sideBarReducer = (state:navBarPageType = initialState,action:Action
 
 
     return state;
-}
+}*/

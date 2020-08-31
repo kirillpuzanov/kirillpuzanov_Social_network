@@ -1,4 +1,5 @@
 import React from 'react';
+/*
 import {objMyFriendType} from "../../redux/store";
 
 
@@ -13,3 +14,4 @@ export function Friends (props:FriendsPropsType){
         </div>
     )
 }
+*/

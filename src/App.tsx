@@ -7,16 +7,12 @@ import {BrowserRouter, Route} from "react-router-dom";
 import {News} from "./Components/News/News";
 import {Music} from "./Components/Music/Music";
 import {Sattings} from "./Components/Sattings/Sattings";
-import {storeType} from "./redux/redux-store";
-import {Friends} from "./Components/Friends/Friends";
-import {DialogsContainer} from "./Components/Dialogs/DialogsContainer";
-
-type appPropsType = {
-    // store: storeType
-}
+import DialogsContainer from "./Components/Dialogs/DialogsContainer";
 
 
-function App(props: appPropsType) {
+
+
+function App() {
 
     // const state = props.store.getState();
     return (

@@ -1,8 +1,7 @@
 import React from 'react';
 import c from './ProFile.module.css';
 import {ProfileInfo} from "./ProfileInfo/ProfileInfo";
-import {MyPostsContainer} from "./MyPosts/MyPostsContainer";
-import {storeType} from "../../redux/redux-store";
+import MyPostsContainer from "./MyPosts/MyPostsContainer";
 
 
 type ProfilePropsType = {
@@ -11,6 +10,8 @@ type ProfilePropsType = {
     dispatch: (action: ActionsTypes) => void*/
     // store:storeType
 }
+
+
 
 export function Profile(props: ProfilePropsType) {
 

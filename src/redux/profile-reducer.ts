@@ -1,13 +1,13 @@
 import {v1} from "uuid";
-import {ActionsTypes, AddPostType, ChangeTextareaType, objPostType} from "./store";
+import {InferActionsTypes} from "./redux-store";
+
+type ActionsTypes = InferActionsTypes<typeof profileActions>
 
 
-const ADD_POST = 'ADD-NEW-POST';
-const CHANGE_TEXTAREA = 'CHANGE-TEXTAREA';
-
-type ProfilePageType = {
-    postsData: Array<objPostType>
-    newPostText: string
+export type PostDataType = {
+    id: string
+    message: string
+    likes: number
 }
 
 let initialState = {
@@ -16,27 +16,32 @@ let initialState = {
             {id: v1(), message: 'Hi, how are you?', likes: 7},
             {id: v1(), message: 'Hi, how are you?', likes: 7},
             {id: v1(), message: 'Hallo, i am fine!', likes: 10}
-        ],
+        ] as Array<PostDataType>,
     newPostText: ''
 };
+type InitialStateType = typeof initialState;
 
-export const profileReducer = (state: ProfilePageType = initialState, action: ActionsTypes) => {
+export const profileReducer = (state = initialState, action: ActionsTypes): InitialStateType => {
+
     switch (action.type) {
-        case ADD_POST:
-            let newPost: objPostType = {id: v1(), message: action.newMessage, likes: 0}
-            state.postsData.unshift(newPost);
-            state.newPostText = '';
-            return state;
-        case CHANGE_TEXTAREA:
-            state.newPostText = action.newText;
-            return state
+        case "ADD_POST":{
+            const newPost = {id: v1(), message: action.newMessage, likes: 0}
+            return {...state, postsData: [newPost, ...state.postsData]}
+        }
+        case "CHANGE_TEXTAREA": {
+            return {...state, newPostText: action.newText }
+        }
         default:
-            return state;
+            return state
     }
 }
-export const addPostActionCreator = (newPostText: string): AddPostType => {
-    return {type: ADD_POST, newMessage: newPostText}
+
+export const profileActions = {
+    addPostActionCreator: (newPostText: string) =>({
+            type: 'ADD_POST', newMessage: newPostText
+    }as const),
+    changeTextAreaActionCreator:(newText: string)=>({
+        type: 'CHANGE_TEXTAREA', newText: newText
+    }as const),
 }
-export const changeTextAreaActionCreator = (newText: string): ChangeTextareaType => {
-    return {type: CHANGE_TEXTAREA, newText: newText}
-}
+
