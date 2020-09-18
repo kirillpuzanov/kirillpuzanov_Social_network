@@ -8,13 +8,13 @@ import {News} from "./Components/News/News";
 import {Music} from "./Components/Music/Music";
 import {Sattings} from "./Components/Sattings/Sattings";
 import DialogsContainer from "./Components/Dialogs/DialogsContainer";
+import UsersContainer from "./Components/Users/UsersContainer";
 
 
 
 
 function App() {
 
-    // const state = props.store.getState();
     return (
         <BrowserRouter>
             <div className='App_wrapper'>
@@ -22,19 +22,13 @@ function App() {
                 <NavBar/>
                 <div className='App_wrapper__content'>
                     <Route path={'/profile'}
-                           render={() => <Profile
-                               /*postsData={state.profilePage.postsData}
-                               newPostText={state.profilePage.newPostText}
-                               dispatch={props.store.dispatch.bind(props.store)}*/
-                               // store={props.store}
-                           />}
+                           render={() => <Profile/>}
                     />
                     <Route path={'/dialogs'}
-                           render={() => <DialogsContainer
-                               // store={props.store}
-                               // messagesData={state.messagesPage.messagesData}
-                               // dialogsData={state.messagesPage.dialogsData}
-                           />}
+                           render={() => <DialogsContainer/>}
+                    />
+                    <Route path={'/users'}
+                           render={() => <UsersContainer/>}
                     />
                     <Route render={() => <News/>} path={'/news'}/>
                     <Route render={() => <Music/>} path={'/music'}/>

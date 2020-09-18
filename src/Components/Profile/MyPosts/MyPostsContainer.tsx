@@ -4,9 +4,6 @@ import {MyPosts} from "./MyPosts";
 import {connect} from "react-redux";
 import {AppStateType} from "../../../redux/redux-store";
 
-
-
-
 type Maintype = {}
 
 type MapStateToPropsType = {
@@ -18,6 +15,9 @@ type MapDispatchToPropsType = {
     TextAreaActionCreator: (newText: string) => void
 }
 type MyPostContainerType = Maintype & MapStateToPropsType & MapDispatchToPropsType
+
+
+
 
 const MyPostContainer = (props: MyPostContainerType) => {
     const {newPostText, postsData, PostActionCreator, TextAreaActionCreator} = props

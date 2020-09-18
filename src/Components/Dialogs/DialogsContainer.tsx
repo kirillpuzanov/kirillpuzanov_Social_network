@@ -2,7 +2,7 @@ import React, {ChangeEvent} from 'react';
 import {Dialogs} from "./Dialogs";
 import {connect} from "react-redux";
 import {AppStateType} from "../../redux/redux-store";
-import {dialogsActions, dialogsDataType, messagesDataType} from "../../redux/message-reducer";
+import {dialogsActions, dialogsDataType, messagesDataType} from "../../redux/dialogs-reducer";
 
 
 type DialogsContainerType = Maintype & MapStateToPropsType & MapDispatchToPropsType
@@ -21,14 +21,13 @@ type MapDispatchToPropsType = {
 }
 
 const mapStateToProps = (state: AppStateType): MapStateToPropsType => {
-
-
     return {
         messagesData: state.messagesPage.messagesData,
         newMessage: state.messagesPage.newMessage,
         dialogsData: state.messagesPage.dialogsData
     }
 }
+
 
 export function DialogsContainer(props: DialogsContainerType) {
 
@@ -38,7 +37,6 @@ export function DialogsContainer(props: DialogsContainerType) {
     const sendMessage = () => {
         props.sendMessageCreator(props.newMessage)
     }
-
     return (
         <Dialogs
             sendMessage={sendMessage}
@@ -53,6 +51,4 @@ export function DialogsContainer(props: DialogsContainerType) {
 export default connect<MapStateToPropsType, MapDispatchToPropsType, Maintype, AppStateType>(mapStateToProps, {
     NewMessageCreator: dialogsActions.NewMessageCreator,
     sendMessageCreator: dialogsActions.sendMessageCreator
-
-
 })(DialogsContainer);

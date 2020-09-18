@@ -24,12 +24,12 @@ type InitialStateType = typeof initialState;
 export const profileReducer = (state = initialState, action: ActionsTypes): InitialStateType => {
 
     switch (action.type) {
-        case "ADD_POST":{
+        case "ADD_POST": {
             const newPost = {id: v1(), message: action.newMessage, likes: 0}
-            return {...state, postsData: [newPost, ...state.postsData]}
+            return {...state, newPostText: '', postsData: [newPost, ...state.postsData]}
         }
         case "CHANGE_TEXTAREA": {
-            return {...state, newPostText: action.newText }
+            return {...state, newPostText: action.newText}
         }
         default:
             return state
@@ -37,11 +37,14 @@ export const profileReducer = (state = initialState, action: ActionsTypes): Init
 }
 
 export const profileActions = {
-    addPostActionCreator: (newPostText: string) =>({
-            type: 'ADD_POST', newMessage: newPostText
-    }as const),
-    changeTextAreaActionCreator:(newText: string)=>({
+    addPostActionCreator: (newPostText: string) => ({
+        type: 'ADD_POST', newMessage: newPostText
+    } as const),
+    changeTextAreaActionCreator: (newText: string) => ({
         type: 'CHANGE_TEXTAREA', newText: newText
-    }as const),
+    } as const),
 }
+
+
+
 

@@ -2,7 +2,7 @@
 import {v1} from "uuid";
 /*
 
-type navBarPageType = {
+type sideBarPageType = {
     myFriends:Array<objMyFriendType>
 }
 */
@@ -16,7 +16,7 @@ let initialState = {
     ]
 };
 
-export const sideBarReducer = (state:navBarPageType = initialState,action:ActionsTypes) => {
+export const sideBarReducer = (state:sideBarPageType = initialState,action:ActionsTypes) => {
 
 
     return state;
