@@ -2,25 +2,17 @@ import React from 'react';
 import c from './ProFile.module.css';
 import {ProfileInfo} from "./ProfileInfo/ProfileInfo";
 import MyPostsContainer from "./MyPosts/MyPostsContainer";
+import {PostDataType, UserProfileType} from "../../redux/profile-reducer";
 
-
-type ProfilePropsType = {
-  /*  postsData: Array<objPostType>
-    newPostText: string
-    dispatch: (action: ActionsTypes) => void*/
-    // store:storeType
+type ProfilePropsType ={
+    userProfile: UserProfileType | null
 }
 
-
-
-export function Profile(props: ProfilePropsType) {
-
+export function Profile(props:ProfilePropsType) {
     return (
         <div className={c.profile}>
-            <ProfileInfo/>
-            <MyPostsContainer
-                // store={props.store}
-            />
+            <ProfileInfo userProfile={props.userProfile}/>
+            <MyPostsContainer/>
         </div>
     )
 }

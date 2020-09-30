@@ -1,45 +1,55 @@
-import React from 'react';
+import React from "react";
+import style from "./Users.module.css";
+import avaUserDefault from "../../assets/img/user-png-2.png";
 import {UserType} from "../../redux/users-reducer";
-import style from './Users.module.css';
-import axios from 'axios';
-import avaUserDefault from '../../assets/img/user-png-2.png';
+import {NavLink} from "react-router-dom";
 
-export type UsersType = {
+type UserssType = {
     users: Array<UserType>
     follow: (userId: string) => void
     unFollow: (userId: string) => void
-    setUsers: (users: Array<UserType>) => void
+    pageSize: number
+    totalUsersCount: number
+    currentPage: number
+    onPageChanged: (pageNumber: number) => void
 }
 
-// в React.Component<UsersType, Array<UserType>>  : < тип пропсов самой компоненты, тип стейта, который возвращает response >
-export class Users extends React.Component<UsersType, Array<UserType>> {
-
-    componentDidMount() {
-        axios.get<{ items: Array<UserType>, totalCount: number, error: null | string }>('https://social-network.samuraijs.com/api/1.0/users')
-            .then((response) => {
-                this.props.setUsers(response.data.items)
-            });
+export const Users = (props: UserssType) => {
+    let pagesCount = Math.ceil(props.totalUsersCount / props.pageSize);
+    let pages = [];
+    for (let i = 1; i <= pagesCount; i++) {
+        pages.push(i)
     }
-    render() {
-        return (
+    return (
+        <div>
             <div>
                 {
-                    this.props.users.map(el => <div key={el.id}>
+                    pages.map((p) => <span key={Math.random()}
+                                           onClick={() => props.onPageChanged(p)}
+                                           className={props.currentPage === p ? style.selectedMode : ''}>{p}</span>)
+                }
+            </div>
+            {
+                props.users.map(el => <div key={el.id}>
                 <span>
+
                     <div className={style.PhotoAva}>
-                        <img src={el.photos.small != null ? el.photos.small : avaUserDefault}/> </div>
+                        <NavLink to={'/profile/' + el.id}>
+                        <img src={el.photos.small != null ? el.photos.small : avaUserDefault}/>
+                        </NavLink>
+                    </div>
                     <div>
                         {el.followed
                             ? <button onClick={() => {
-                                this.props.unFollow(el.id)
+                                props.unFollow(el.id)
                             }}> Unfollow </button>
 
                             : <button onClick={() => {
-                                this.props.follow(el.id)
+                                props.follow(el.id)
                             }}> Follow </button>}
                     </div>
                 </span>
-                        <span>
+                    <span>
                     <span>
                         <div>{el.name}</div>
                         <div>{el.status}</div>
@@ -49,9 +59,8 @@ export class Users extends React.Component<UsersType, Array<UserType>> {
                         <div>{'el.location.city'}</div>
                     </span>
                 </span>
-                    </div>)
-                }
-            </div>
-        )
-    }
+                </div>)
+            }
+        </div>
+    )
 }
