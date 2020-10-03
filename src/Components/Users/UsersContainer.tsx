@@ -8,12 +8,12 @@ import {Preloader} from "../../common/Preloader/Preloader";
 
 export type UsersContainerType = MapStateToPropsType & mapDispatchToPropsType;
 
-// в React.Component<UsersContainerType, Array<UserType>>  : < тип пропсов самой компоненты, тип стейта, который возвращает response >
-export class UsersContainer extends React.Component<UsersContainerType, Array<UserType>> {
+// в React.Component<UsersContainerType, Array<UserType>>  : < тип пропсов самой компоненты, тип локального стейта внутри компоненты (если он есть) >
+export class UsersContainer extends React.Component<UsersContainerType> {
 
     componentDidMount() {
         this.props.toggleIsFetching(true)
-        axios.get<{ items: Array<UserType>, totalCount: number, error: null | string }>(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pageSize}`)
+        axios.get<{ items: Array<UserType>, totalCount: number, error: null | string }>(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pageSize}`,{withCredentials:true})
             .then((response) => {
                 this.props.toggleIsFetching(false)
                 this.props.setUsers(response.data.items)
@@ -24,7 +24,7 @@ export class UsersContainer extends React.Component<UsersContainerType, Array<Us
     onPageChanged = (pageNumber: number) => {
         this.props.setCurrentPage(pageNumber);
         this.props.toggleIsFetching(true)
-        axios.get<{ items: Array<UserType>, totalCount: number, error: null | string }>(`https://social-network.samuraijs.com/api/1.0/users?page=${pageNumber}&count=${this.props.pageSize}`)
+        axios.get<{ items: Array<UserType>, totalCount: number, error: null | string }>(`https://social-network.samuraijs.com/api/1.0/users?page=${pageNumber}&count=${this.props.pageSize}`,{withCredentials:true})
             .then((response) => {
                 this.props.toggleIsFetching(false)
                 this.props.setUsers(response.data.items)

@@ -1,10 +1,21 @@
 
-.Header {
+.header {
     grid-area: h;
     background-color: azure ;
+    padding:  0 20px;
 }
 
-.Header img {
+.header img {
     width: 40px;
     margin: 10px 0 10px 30px;
+}
+.header_loginBlock{
+    float:right;
+   margin-top: 15px;
+}
+.header_loginBlock a {
+    color:#000;
+    text-decoration: none;
+    cursor: pointer;
+    font-size: 20px;
 }

@@ -1,6 +1,5 @@
 import React from 'react';
 import './App.css';
-import {Header} from './Components/Header/Header'
 import {NavBar} from './Components/NavBar/NavBar'
 import {Route} from "react-router-dom";
 import {News} from "./Components/News/News";
@@ -9,14 +8,15 @@ import {Sattings} from "./Components/Sattings/Sattings";
 import DialogsContainer from "./Components/Dialogs/DialogsContainer";
 import UsersContainer from "./Components/Users/UsersContainer";
 import ProfileContainer from "./Components/Profile/ProfileContainer";
+import HeaderContainer from "./Components/Header/HeaderContainer";
+
 
 
 function App() {
 
     return (
-
         <div className='App_wrapper'>
-            <Header/>
+            <HeaderContainer  />
             <NavBar/>
             <div className='App_wrapper__content'>
                 <Route path={'/profile/:userId?'}
@@ -34,7 +34,6 @@ function App() {
                 {/*<Route render={() => <Friends myFriends={state.sideBar.myFriends}/>} path={'/friends'}/>*/}
             </div>
         </div>
-
     );
 }
 

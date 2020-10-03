@@ -43,8 +43,6 @@ type MapDispatchToPropsType = {
 let MapStateToProps = (state: AppStateType):MapStateToPropsType => {
     return{
         userProfile: state.profilePage.userProfile,
-        /*postsData:state.profilePage.postsData,
-        newPostText:state.profilePage.newPostText,*/
     }
 }
 

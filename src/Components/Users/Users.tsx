@@ -3,6 +3,7 @@ import style from "./Users.module.css";
 import avaUserDefault from "../../assets/img/user-png-2.png";
 import {UserType} from "../../redux/users-reducer";
 import {NavLink} from "react-router-dom";
+import axios from "axios";
 
 type UserssType = {
     users: Array<UserType>
@@ -41,12 +42,24 @@ export const Users = (props: UserssType) => {
                     <div>
                         {el.followed
                             ? <button onClick={() => {
-                                props.unFollow(el.id)
+                                axios.delete<{resultCode:number, messages:string[],data:any }>(`https://social-network.samuraijs.com/api/1.0/follow/${el.id}`,{withCredentials:true, headers:{'API-KEY':'aee1e098-c1ec-45af-b764-0edfc4a89fa8'}})
+                                    .then((response) => {
+                                        if(response.data.resultCode === 0){
+                                            props.unFollow(el.id)
+                                        }
+                                    });
+
                             }}> Unfollow </button>
 
                             : <button onClick={() => {
-                                props.follow(el.id)
-                            }}> Follow </button>}
+                                axios.post<{resultCode:number, messages:string[],data:any }>(`https://social-network.samuraijs.com/api/1.0/follow/${el.id}`,{},{withCredentials:true,headers:{'API-KEY':'aee1e098-c1ec-45af-b764-0edfc4a89fa8'}})
+                                    .then((response) => {
+                                        if(response.data.resultCode === 0){
+                                            props.follow(el.id)
+                                        }
+                                    });
+                            }}> Follow </button>
+                        }
                     </div>
                 </span>
                     <span>
