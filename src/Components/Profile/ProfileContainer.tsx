@@ -1,10 +1,10 @@
 import React from 'react';
-import { profileActions, UserProfileType} from "../../redux/profile-reducer";
+import {profileActions, UserProfileType} from "../../redux/profile-reducer";
 import {Profile} from "./Profile";
-import axios from "axios";
 import {connect} from "react-redux";
 import {AppStateType} from "../../redux/redux-store";
-import { withRouter, RouteComponentProps } from 'react-router-dom';
+import {RouteComponentProps, withRouter} from 'react-router-dom';
+import {profileAPI} from "../../api/api";
 
 type ProfileContainerType = MapStateToPropsType & MapDispatchToPropsType;
 // PathParamsType типы ожидаемых параметров & ProfileContainerType тип нашей контейнерной компоненты
@@ -13,11 +13,10 @@ type ProfileContainerTypeWithRouter = RouteComponentProps<PathParamsType> & Prof
 class ProfileContainer extends React.Component<ProfileContainerTypeWithRouter, UserProfileType> {
 
     componentDidMount() {
-        // componentDidMount - метод жизненного цикла контейнерной компоненты,  вызывается сразу после монтирования (то есть, вставки компонента в DOM).Это хорошее место для создания сетевых запросов и т.д.
+        // componentDidMount - метод жизненного цикла контейнерной компоненты,  вызывается сразу после монтирования (то есть, вставки компонента в DOM).Это хорошее место для создания  запросов и т.д.
         let userId = this.props.match.params.userId;
         if(!userId)  userId = '2';
-        axios.get<UserProfileType>(`https://social-network.samuraijs.com/api/1.0/profile/` + userId)
-            .then((response) => {
+        profileAPI.getUser(userId).then((response) => {
                 this.props.setUserProfile(response.data)
             });
     }

@@ -2,7 +2,7 @@ import React from 'react';
 import c from './ProFile.module.css';
 import {ProfileInfo} from "./ProfileInfo/ProfileInfo";
 import MyPostsContainer from "./MyPosts/MyPostsContainer";
-import {PostDataType, UserProfileType} from "../../redux/profile-reducer";
+import {UserProfileType} from "../../redux/profile-reducer";
 
 type ProfilePropsType ={
     userProfile: UserProfileType | null

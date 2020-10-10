@@ -1,5 +1,7 @@
-
-import {InferActionsTypes} from "./redux-store";
+import {AppStateType, InferActionsTypes} from "./redux-store";
+import {usersAPI} from "../api/api";
+import {Dispatch} from "redux";
+import {ThunkAction} from "redux-thunk";
 
 
 type UserLocationType = {
@@ -24,17 +26,24 @@ export type initialStateUsersType = {
     totalUsersCount: number
     currentPage: number
     isFetching: boolean
+    followingInProgress: string[]
+    userId: string
 }
 
 export type UsersActionsType = InferActionsTypes<typeof usersActions>
 
 export const usersActions = {
-    followAC: (userId: string) => ({type: 'FOLLOW', userId: userId} as const),
-    unFollowAC: (userId: string) => ({type: 'UNFOLLOW', userId: userId} as const),
+    followSuccessAC: (userId: string) => ({type: 'FOLLOW', userId: userId} as const),
+    unFollowSuccessAC: (userId: string) => ({type: 'UNFOLLOW', userId: userId} as const),
     setUsersAC: (users: Array<UserType>) => ({type: 'SET_USERS', users: users} as const),
     setCurrentPageAC: (currentPage: number) => ({type: 'SET_CURRENT-PAGE', currentPage} as const),
     setTotalUsersCountAC: (totalUsersCount: number) => ({type: 'SET-TOTAL-USERS-COUNT', totalUsersCount} as const),
     toggleIsFetchingAC: (isFetching: boolean) => ({type: 'TOGGLE-IS-FETCHING', isFetching} as const),
+    toggleIsFollowingProgressAC: (isFetching: boolean, userId: string) => ({
+        type: 'TOGGLE-IS-FOLLOWING=PROGRESS',
+        isFetching,
+        userId
+    } as const),
 }
 
 
@@ -44,6 +53,8 @@ const initialStateUsers: initialStateUsersType = {
     totalUsersCount: 0,
     currentPage: 1,
     isFetching: false,
+    followingInProgress: [],
+    userId: '',
 }
 
 export const usersReducer = (state = initialStateUsers, action: UsersActionsType): initialStateUsersType => {
@@ -82,9 +93,64 @@ export const usersReducer = (state = initialStateUsers, action: UsersActionsType
         case "TOGGLE-IS-FETCHING": {
             return {...state, isFetching: action.isFetching}
         }
+        case 'TOGGLE-IS-FOLLOWING=PROGRESS': {
+            return {
+                ...state,
+                followingInProgress: action.isFetching
+                    ? [...state.followingInProgress, action.userId]
+                    : state.followingInProgress.filter(id => id !== action.userId)
+            }
+        }
         default:
             return state;
     }
 }
 
+type thunkType = ThunkAction<void, AppStateType, unknown, UsersActionsType>
 
+export const getUsersTC = (currentPage: number, pageSize: number): thunkType => (dispatch, getState) => {
+    dispatch(usersActions.toggleIsFetchingAC(true))
+    usersAPI.getUsers(currentPage, pageSize)
+        .then((response) => {
+            dispatch(usersActions.toggleIsFetchingAC(false))
+            dispatch(usersActions.setUsersAC(response.items))
+            dispatch(usersActions.setTotalUsersCountAC(response.totalCount))
+        });
+
+}
+export const followTC = (userId: string): thunkType => {
+    return (dispatch, getState) => {
+        dispatch(usersActions.toggleIsFollowingProgressAC(true, userId))
+        usersAPI.follow(userId)
+            .then((response) => {
+                if (response.data.resultCode === 0) {
+                    dispatch(usersActions.followSuccessAC(userId))
+                }
+                dispatch(usersActions.toggleIsFollowingProgressAC(false, userId))
+            });
+    }
+}
+
+export const unfollowTC = (userId: string): thunkType => {
+    return (dispatch, getState) => {
+        dispatch(usersActions.toggleIsFollowingProgressAC(true, userId))
+        usersAPI.unfollow(userId)
+            .then((response) => {
+                if (response.data.resultCode === 0) {
+                    dispatch(usersActions.unFollowSuccessAC(userId))
+                }
+                dispatch(usersActions.toggleIsFollowingProgressAC(false, userId))
+            });
+    }
+}
+// 1) Вариант типизации Thunk
+// type getStateType = ()=> AppStateType
+// type dispatchType = Dispatch<UsersActionsType>
+// export const getUsersTC = (currentPage: number, pageSize: number) => (dispatch: dispatchType, getState:getStateType) => {
+//     dispatch(usersActions.toggleIsFetchingAC(true))
+//     usersAPI.getUsers(currentPage, pageSize).then((response) => {
+//         dispatch(usersActions.toggleIsFetchingAC(false))
+//         dispatch(usersActions.setUsersAC(response.items))
+//         dispatch(usersActions.setTotalUsersCountAC(response.totalCount))
+//     });
+// }
