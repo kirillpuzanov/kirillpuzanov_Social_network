@@ -1,4 +1,6 @@
-import {InferActionsTypes} from "./redux-store";
+import {AppStateType, InferActionsTypes} from "./redux-store";
+import {ThunkAction} from "redux-thunk";
+import {headerAPI} from "../api/api";
 
 
 export type AuthStateType = {
@@ -12,11 +14,6 @@ export type authDataType = {
     id: null | number
     email: null | number
     login: null | number
-}
-export type authActionsType = InferActionsTypes<typeof authActions>
-
-export const authActions = {
-    setAuthUserDataAC: (data: authDataType) => ({type: 'SET-USER-DATA', data} as const),
 }
 
 
@@ -36,8 +33,8 @@ export const authReducer = (state = initialState, action: authActionsType): Auth
             return {
                 ...state,
                 userId: action.data.id,
-                email:action.data.email,
-                login:action.data.login,
+                email: action.data.email,
+                login: action.data.login,
                 isAuth: true
             }
         }
@@ -47,3 +44,18 @@ export const authReducer = (state = initialState, action: authActionsType): Auth
 }
 
 
+export type authActionsType = InferActionsTypes<typeof authActions>
+export const authActions = {
+    setAuthUserDataAC: (data: authDataType) => ({type: 'SET-USER-DATA', data} as const),
+}
+
+
+type thunkType = ThunkAction<void, AppStateType, unknown, authActionsType>
+
+export const getAuthUserDataTC = (): thunkType => (dispatch) => {
+    headerAPI.authMe().then((response) => {
+        if (response.resultCode === 0) {
+          dispatch(authActions.setAuthUserDataAC(response.data))
+        }
+    })
+}

@@ -116,7 +116,6 @@ export const getUsersTC = (currentPage: number, pageSize: number): thunkType => 
             dispatch(usersActions.setUsersAC(response.items))
             dispatch(usersActions.setTotalUsersCountAC(response.totalCount))
         });
-
 }
 export const followTC = (userId: string): thunkType => {
     return (dispatch, getState) => {

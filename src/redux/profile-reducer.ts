@@ -1,7 +1,9 @@
 import {v1} from "uuid";
-import {InferActionsTypes} from "./redux-store";
+import {AppStateType, InferActionsTypes} from "./redux-store";
+import {profileAPI} from "../api/api";
+import {ThunkAction} from "redux-thunk";
 
-type ActionsTypes = InferActionsTypes<typeof profileActions>
+type ProfileActionsTypes = InferActionsTypes<typeof profileActions>
 
 
 export type PostDataType = {
@@ -26,7 +28,7 @@ export type UserProfileType = {
     lookingForAJobDescription: string
     fullName: string
     userId: number
-    photos: { small: string; large: string } ;
+    photos: { small: string; large: string };
 }
 
 let initialState = {
@@ -41,7 +43,7 @@ let initialState = {
 };
 export type InitialStateProfileType = typeof initialState;
 
-export const profileReducer = (state = initialState, action: ActionsTypes): InitialStateProfileType => {
+export const profileReducer = (state = initialState, action: ProfileActionsTypes): InitialStateProfileType => {
 
     switch (action.type) {
         case "ADD_POST": {
@@ -71,6 +73,13 @@ export const profileActions = {
     } as const),
 }
 
+type thunkType = ThunkAction<void, AppStateType, unknown, ProfileActionsTypes>
+
+export const getUserProfileTC = (userId: string): thunkType => (dispatch,getState) => {
+    profileAPI.getProfile(userId).then((response) => {
+        dispatch(profileActions.setUserProfileAC(response.data))
+    });
+}
 
 
 

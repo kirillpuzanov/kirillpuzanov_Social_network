@@ -1,10 +1,9 @@
 import React from 'react';
-import {profileActions, UserProfileType} from "../../redux/profile-reducer";
+import {getUserProfileTC, UserProfileType} from "../../redux/profile-reducer";
 import {Profile} from "./Profile";
 import {connect} from "react-redux";
 import {AppStateType} from "../../redux/redux-store";
 import {RouteComponentProps, withRouter} from 'react-router-dom';
-import {profileAPI} from "../../api/api";
 
 type ProfileContainerType = MapStateToPropsType & MapDispatchToPropsType;
 // PathParamsType типы ожидаемых параметров & ProfileContainerType тип нашей контейнерной компоненты
@@ -16,9 +15,7 @@ class ProfileContainer extends React.Component<ProfileContainerTypeWithRouter, U
         // componentDidMount - метод жизненного цикла контейнерной компоненты,  вызывается сразу после монтирования (то есть, вставки компонента в DOM).Это хорошее место для создания  запросов и т.д.
         let userId = this.props.match.params.userId;
         if(!userId)  userId = '2';
-        profileAPI.getUser(userId).then((response) => {
-                this.props.setUserProfile(response.data)
-            });
+        this.props.getUserProfile(userId)
     }
 
     render() {
@@ -36,7 +33,7 @@ type MapStateToPropsType = {
     userProfile:UserProfileType | null
 };
 type MapDispatchToPropsType = {
-    setUserProfile: (userProfile: UserProfileType) => void
+    getUserProfile: (userId: string) => void
 };
 
 let MapStateToProps = (state: AppStateType):MapStateToPropsType => {
@@ -48,7 +45,7 @@ let MapStateToProps = (state: AppStateType):MapStateToPropsType => {
 let WithUrlDataContainerComponent = withRouter(ProfileContainer)
 
 export default connect<MapStateToPropsType, MapDispatchToPropsType, {}, AppStateType>(MapStateToProps, {
-    setUserProfile: profileActions.setUserProfileAC,
+    getUserProfile: getUserProfileTC
 })(WithUrlDataContainerComponent);
 
 

@@ -1,12 +1,6 @@
 import React from 'react';
 import {connect} from "react-redux";
-import {
-    followTC,
-    getUsersTC,
-    initialStateUsersType, unfollowTC,
-    usersActions,
-    UserType
-} from "../../redux/users-reducer";
+import {followTC, getUsersTC, initialStateUsersType, unfollowTC, usersActions} from "../../redux/users-reducer";
 import {AppStateType} from "../../redux/redux-store";
 import {Users} from "./Users";
 import {Preloader} from "../../common/Preloader/Preloader";

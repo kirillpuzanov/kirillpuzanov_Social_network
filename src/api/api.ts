@@ -17,25 +17,25 @@ export const usersAPI = {
     },
 
     unfollow(userId: string) {
-        return instance.delete<{ resultCode: number, messages: string[], data: any }>(`https://social-network.samuraijs.com/api/1.0/follow/${userId}`)
+        return instance.delete<{ resultCode: number, messages: string[], data: any }>(`follow/${userId}`)
     },
 
     follow(userId: string) {
-        return instance.post<{ resultCode: number, messages: string[], data: any }>(`https://social-network.samuraijs.com/api/1.0/follow/${userId}`)
+        return instance.post<{ resultCode: number, messages: string[], data: any }>(`follow/${userId}`)
     },
 }
 
 
 export const headerAPI = {
-    getAuth() {
-        return instance.get<{ data: authDataType, resultCode: number, messages: string[] }>('auth/me',)
+    authMe() {
+        return instance.get<{ data: authDataType, resultCode: number, messages: string[] }>('auth/me')
             .then(response => response.data)
     }
 
 }
 
 export const profileAPI = {
-    getUser(userId: string) {
-        return axios.get<UserProfileType>(`https://social-network.samuraijs.com/api/1.0/profile/` + userId)
+    getProfile(userId: string) {
+        return instance.get<UserProfileType>(`profile/` + userId)
     }
 }
