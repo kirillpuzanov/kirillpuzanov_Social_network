@@ -4,6 +4,7 @@ import {followTC, getUsersTC, initialStateUsersType, unfollowTC, usersActions} f
 import {AppStateType} from "../../redux/redux-store";
 import {Users} from "./Users";
 import {Preloader} from "../../common/Preloader/Preloader";
+import {Redirect} from 'react-router-dom';
 
 
 export type UsersContainerType = MapStateToPropsType & mapDispatchToPropsType;
@@ -13,26 +14,15 @@ export class UsersContainer extends React.Component<UsersContainerType> {
 
     componentDidMount() {
         this.props.getUsers(this.props.currentPage, this.props.pageSize)
-        // this.props.toggleIsFetching(true)
-        // usersAPI.getUsers(this.props.currentPage, this.props.pageSize).then((response) => {
-        //     this.props.toggleIsFetching(false)
-        //     this.props.setUsers(response.items)
-        //     this.props.setTotalUsersCount(response.totalCount)
-        // });
     }
 
     onPageChanged = (pageNumber: number) => {
         this.props.setCurrentPage(pageNumber);
         this.props.getUsers(pageNumber, this.props.pageSize)
-        // this.props.toggleIsFetching(true)
-        //
-        // usersAPI.getUsers(pageNumber, this.props.pageSize).then((response) => {
-        //     this.props.toggleIsFetching(false)
-        //     this.props.setUsers(response.items)
-        // });
     }
 
     render() {
+        if (!this.props.isAuth) return <Redirect to={'/login'}/>
         return (
             <>
                 {this.props.isFetching ? <Preloader/> : null}
@@ -54,8 +44,8 @@ export class UsersContainer extends React.Component<UsersContainerType> {
     }
 }
 
-
-type MapStateToPropsType = initialStateUsersType;
+type isAuthType = { isAuth: boolean }
+type MapStateToPropsType = initialStateUsersType & isAuthType;
 const mapStateToProps = (state: AppStateType): MapStateToPropsType => {
     return {
         users: state.usersPage.users,
@@ -65,6 +55,7 @@ const mapStateToProps = (state: AppStateType): MapStateToPropsType => {
         isFetching: state.usersPage.isFetching,
         followingInProgress: state.usersPage.followingInProgress,
         userId: state.usersPage.userId,
+        isAuth: state.auth.isAuth,
     }
 }
 type mapDispatchToPropsType = {

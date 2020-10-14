@@ -4,11 +4,12 @@ import {NavBar} from './Components/NavBar/NavBar'
 import {Route} from "react-router-dom";
 import {News} from "./Components/News/News";
 import {Music} from "./Components/Music/Music";
-import {Sattings} from "./Components/Sattings/Sattings";
+import {Settings} from "./Components/Settings/Settings";
 import DialogsContainer from "./Components/Dialogs/DialogsContainer";
 import UsersContainer from "./Components/Users/UsersContainer";
 import ProfileContainer from "./Components/Profile/ProfileContainer";
 import HeaderContainer from "./Components/Header/HeaderContainer";
+import {LoginPage} from "./Components/Login/Login";
 
 
 
@@ -28,9 +29,14 @@ function App() {
                 <Route path={'/users'}
                        render={() => <UsersContainer/>}
                 />
+                <Route path={'/login'}
+                       render={() => <LoginPage />}
+                />
+
+
                 <Route render={() => <News/>} path={'/news'}/>
                 <Route render={() => <Music/>} path={'/music'}/>
-                <Route render={() => <Sattings/>} path={'/sattings'}/>
+                <Route render={() => <Settings/>} path={'/settings'}/>
                 {/*<Route render={() => <Friends myFriends={state.sideBar.myFriends}/>} path={'/friends'}/>*/}
             </div>
         </div>

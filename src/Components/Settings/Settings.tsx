@@ -1,9 +1,9 @@
 import React from 'react';
 
-export function Sattings(){
+export function Settings(){
     return(
         <div>
-            Sattings
+            Settings
         </div>
     )
 }
