@@ -6,6 +6,7 @@ import {Users} from "./Users";
 import {Preloader} from "../../common/Preloader/Preloader";
 import {Redirect} from 'react-router-dom';
 import {WithAuthRedirect} from "../../hoc/WithAuthRedirect";
+import {compose} from "redux";
 
 
 export type UsersContainerType = MapStateToPropsType & mapDispatchToPropsType;
@@ -44,8 +45,6 @@ export class UsersContainer extends React.Component<UsersContainerType> {
     }
 }
 
-let AuthRedirectComponent = WithAuthRedirect(UsersContainer)
-
 type MapStateToPropsType = initialStateUsersType
 const mapStateToProps = (state: AppStateType): MapStateToPropsType => {
     return {
@@ -67,17 +66,21 @@ type mapDispatchToPropsType = {
     follow: (userId: string) => void
     unfollow: (userId: string) => void
 }
+const mapDispatchToProps = {
+    followSuccess: usersActions.followSuccessAC,
+    unFollowSuccess: usersActions.unFollowSuccessAC,
+    setCurrentPage: usersActions.setCurrentPageAC,
+    toggleIsFetching: usersActions.toggleIsFetchingAC,
+    getUsers: getUsersTC,
+    follow: followTC,
+    unfollow: unfollowTC,
+}
 
-export default connect(mapStateToProps, {
-        followSuccess: usersActions.followSuccessAC,
-        unFollowSuccess: usersActions.unFollowSuccessAC,
-        setCurrentPage: usersActions.setCurrentPageAC,
-        toggleIsFetching: usersActions.toggleIsFetchingAC,
-        getUsers: getUsersTC,
-        follow: followTC,
-        unfollow: unfollowTC,
-    }
-)(AuthRedirectComponent)
+export default compose<React.ComponentType>(
+    connect(mapStateToProps, mapDispatchToProps),
+    WithAuthRedirect
+)(UsersContainer)
+
 
 // const mapDispatchToProps = (dispatch: Dispatch<UsersActionsType>): mapDispatchToPropsType => {
 //     return {

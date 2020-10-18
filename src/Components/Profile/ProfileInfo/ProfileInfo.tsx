@@ -2,6 +2,8 @@ import React from "react";
 import {UserProfileType} from "../../../redux/profile-reducer";
 import {Preloader} from "../../../common/Preloader/Preloader";
 import avaUserDefault from "../../../assets/img/user-png-2.png";
+import {ProfileStatus} from "./ProfileStatus";
+
 
 type ProfileInfoType = {
     userProfile: UserProfileType | null
@@ -27,7 +29,7 @@ export const ProfileInfo = (props: ProfileInfoType) => {
                 <img style={style}
                      src={props.userProfile.photos.small !== null ? props.userProfile.photos.small : avaUserDefault}
                      alt="userPhoto"/>
-                ava + descr
+                <ProfileStatus status={'status'}/>
             </div>
         </div>
     )

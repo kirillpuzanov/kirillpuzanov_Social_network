@@ -4,6 +4,7 @@ import {connect} from "react-redux";
 import {AppStateType} from "../../redux/redux-store";
 import {dialogsActions, dialogsDataType, messagesDataType} from "../../redux/dialogs-reducer";
 import {WithAuthRedirect} from "../../hoc/WithAuthRedirect";
+import {compose} from "redux";
 
 
 type DialogsContainerType = MainType & MapStateToPropsType & MapDispatchToPropsType
@@ -49,9 +50,21 @@ export function DialogsContainer(props: DialogsContainerType) {
 }
 
 
-let AuthRedirectComponent = WithAuthRedirect(DialogsContainer)
 
-export default connect<MapStateToPropsType, MapDispatchToPropsType, MainType, AppStateType>(mapStateToProps, {
-    NewMessageCreator: dialogsActions.NewMessageCreator,
-    sendMessageCreator: dialogsActions.sendMessageCreator
-})(AuthRedirectComponent);
+// let AuthRedirectComponent = WithAuthRedirect(DialogsContainer)
+//
+// export default connect<MapStateToPropsType, MapDispatchToPropsType, MainType, AppStateType>(mapStateToProps, {
+//     NewMessageCreator: dialogsActions.NewMessageCreator,
+//     sendMessageCreator: dialogsActions.sendMessageCreator
+// })(AuthRedirectComponent);
+//
+
+
+
+export default compose<React.ComponentType>(
+    connect<MapStateToPropsType, MapDispatchToPropsType, MainType, AppStateType>(mapStateToProps, {
+        NewMessageCreator: dialogsActions.NewMessageCreator,
+        sendMessageCreator: dialogsActions.sendMessageCreator
+    }),
+    WithAuthRedirect
+)(DialogsContainer)
