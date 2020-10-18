@@ -5,6 +5,7 @@ import {AppStateType} from "../../redux/redux-store";
 import {Users} from "./Users";
 import {Preloader} from "../../common/Preloader/Preloader";
 import {Redirect} from 'react-router-dom';
+import {WithAuthRedirect} from "../../hoc/WithAuthRedirect";
 
 
 export type UsersContainerType = MapStateToPropsType & mapDispatchToPropsType;
@@ -22,7 +23,6 @@ export class UsersContainer extends React.Component<UsersContainerType> {
     }
 
     render() {
-        if (!this.props.isAuth) return <Redirect to={'/login'}/>
         return (
             <>
                 {this.props.isFetching ? <Preloader/> : null}
@@ -44,8 +44,9 @@ export class UsersContainer extends React.Component<UsersContainerType> {
     }
 }
 
-type isAuthType = { isAuth: boolean }
-type MapStateToPropsType = initialStateUsersType & isAuthType;
+let AuthRedirectComponent = WithAuthRedirect(UsersContainer)
+
+type MapStateToPropsType = initialStateUsersType
 const mapStateToProps = (state: AppStateType): MapStateToPropsType => {
     return {
         users: state.usersPage.users,
@@ -55,7 +56,6 @@ const mapStateToProps = (state: AppStateType): MapStateToPropsType => {
         isFetching: state.usersPage.isFetching,
         followingInProgress: state.usersPage.followingInProgress,
         userId: state.usersPage.userId,
-        isAuth: state.auth.isAuth,
     }
 }
 type mapDispatchToPropsType = {
@@ -76,10 +76,8 @@ export default connect(mapStateToProps, {
         getUsers: getUsersTC,
         follow: followTC,
         unfollow: unfollowTC,
-
-
     }
-)(UsersContainer)
+)(AuthRedirectComponent)
 
 // const mapDispatchToProps = (dispatch: Dispatch<UsersActionsType>): mapDispatchToPropsType => {
 //     return {
