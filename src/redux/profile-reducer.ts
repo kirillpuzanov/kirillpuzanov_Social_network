@@ -40,6 +40,7 @@ let initialState = {
         ] as Array<PostDataType>,
     newPostText: '',
     userProfile: null as null | UserProfileType,
+    status: '',
 };
 export type InitialStateProfileType = typeof initialState;
 
@@ -56,6 +57,9 @@ export const profileReducer = (state = initialState, action: ProfileActionsTypes
         case 'SET-USER-PROFILE': {
             return {...state, userProfile: action.userProfile}
         }
+        case "SET-STATUS": {
+            return {...state, status: action.status}
+        }
         default:
             return state
     }
@@ -71,15 +75,32 @@ export const profileActions = {
     setUserProfileAC: (userProfile: UserProfileType) => ({
         type: 'SET-USER-PROFILE', userProfile
     } as const),
+    setStatusAC: (status: string) => ({
+        type: 'SET-STATUS', status
+    } as const),
 }
 
 type thunkType = ThunkAction<void, AppStateType, unknown, ProfileActionsTypes>
 
-export const getUserProfileTC = (userId: string): thunkType => (dispatch,getState) => {
+export const getUserProfileTC = (userId: string): thunkType => (dispatch) => {
     profileAPI.getProfile(userId).then((response) => {
         dispatch(profileActions.setUserProfileAC(response.data))
     });
 }
 
+export const getStatusTC = (userId: string): thunkType => (dispatch) => {
+    profileAPI.getStatus(userId).then((response) => {
+        dispatch(profileActions.setStatusAC(response.data))
+    })
+}
+
+export const updateStatusTC = (status: string): thunkType => (dispatch) => {
+    profileAPI.updateStatus(status).then((response) => {
+        if (response.data.resultCode === 0) {
+            dispatch(profileActions.setStatusAC(status))
+        }
+
+    })
+}
 
 

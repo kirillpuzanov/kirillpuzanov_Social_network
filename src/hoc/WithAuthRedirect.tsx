@@ -17,6 +17,5 @@ export function WithAuthRedirect<WCP>(WrappedComponent: React.ComponentType<WCP>
         return <WrappedComponent {...restProps as WCP}/>
     }
 
-    let ConnectedAuthRedirect = connect<mapStatePropsType,{},WCP,AppStateType>(mapStateToPropsForRedirect, {})(RedirectComponent);
-    return ConnectedAuthRedirect
+    return  connect<mapStatePropsType,{},WCP,AppStateType>(mapStateToPropsForRedirect, {})(RedirectComponent);
 }

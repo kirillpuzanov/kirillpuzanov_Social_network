@@ -4,7 +4,6 @@ import {followTC, getUsersTC, initialStateUsersType, unfollowTC, usersActions} f
 import {AppStateType} from "../../redux/redux-store";
 import {Users} from "./Users";
 import {Preloader} from "../../common/Preloader/Preloader";
-import {Redirect} from 'react-router-dom';
 import {WithAuthRedirect} from "../../hoc/WithAuthRedirect";
 import {compose} from "redux";
 

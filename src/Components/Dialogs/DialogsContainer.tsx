@@ -48,8 +48,13 @@ export function DialogsContainer(props: DialogsContainerType) {
         />
     )
 }
-
-
+export default compose<React.ComponentType>(
+    connect<MapStateToPropsType, MapDispatchToPropsType, MainType, AppStateType>(mapStateToProps, {
+        NewMessageCreator: dialogsActions.NewMessageCreator,
+        sendMessageCreator: dialogsActions.sendMessageCreator
+    }),
+    WithAuthRedirect
+)(DialogsContainer)
 
 // let AuthRedirectComponent = WithAuthRedirect(DialogsContainer)
 //
@@ -58,13 +63,3 @@ export function DialogsContainer(props: DialogsContainerType) {
 //     sendMessageCreator: dialogsActions.sendMessageCreator
 // })(AuthRedirectComponent);
 //
-
-
-
-export default compose<React.ComponentType>(
-    connect<MapStateToPropsType, MapDispatchToPropsType, MainType, AppStateType>(mapStateToProps, {
-        NewMessageCreator: dialogsActions.NewMessageCreator,
-        sendMessageCreator: dialogsActions.sendMessageCreator
-    }),
-    WithAuthRedirect
-)(DialogsContainer)
