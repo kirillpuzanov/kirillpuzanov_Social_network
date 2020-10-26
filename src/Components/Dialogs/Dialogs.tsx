@@ -1,21 +1,24 @@
-import React, {ChangeEvent} from 'react';
+import React from 'react';
 import s from './Dialogs.module.css';
 import {dialogsDataType, messagesDataType} from "../../redux/dialogs-reducer";
 import {Dialog} from './Dialog/Dialog';
 import {UserMessage} from "./UserMessage/UserMessage";
+import TextAreaReduxForm, {TextareaFormDataType} from "../../common/textareaReduxForm/TextareaReduxForm";
 
 
 type dialogsType = {
     messagesData: Array<messagesDataType>
     dialogsData: Array<dialogsDataType>
-    updateNewMessageBody: (e: ChangeEvent<HTMLTextAreaElement>) => void
-    sendMessage: () => void
-    newMessage: string
+    sendMessage: (newTextBody:string) => void
 }
 
 export function Dialogs(props: dialogsType) {
 
-    const {dialogsData, messagesData, newMessage, sendMessage, updateNewMessageBody} = props
+    const {dialogsData, messagesData,  sendMessage} = props
+
+    const handleSubmit = (formData:TextareaFormDataType)=> {
+        sendMessage(formData.newText)
+    }
     return (
         <div className={s.dialogs_wrapper}>
             <div className={s.user_dialog}>
@@ -24,17 +27,7 @@ export function Dialogs(props: dialogsType) {
                 }
             </div>
             <div className={s.user_message}>
-                <div>
-                    <textarea
-                        placeholder='add text message'
-                        onChange={updateNewMessageBody}
-                        value={newMessage}
-                    >
-                    </textarea>
-                </div>
-                <div>
-                    <button onClick={sendMessage}>Send</button>
-                </div>
+                <TextAreaReduxForm onSubmit={handleSubmit}/>
                 <div>
                     {
                         messagesData.map(message => <UserMessage key={message.id} id={message.id} text={message.text}/>)
@@ -44,3 +37,4 @@ export function Dialogs(props: dialogsType) {
         </div>
     )
 }
+

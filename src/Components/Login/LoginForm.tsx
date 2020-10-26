@@ -1,10 +1,10 @@
 import React from "react";
 import {Field, InjectedFormProps, reduxForm} from 'redux-form'
 
-export type LoginFormDataType ={
-    login:string
-    password:string
-    rememberMe:boolean
+export type LoginFormDataType = {
+    login: string
+    password: string
+    rememberMe: boolean
 }
 
 const LoginForm: React.FC<InjectedFormProps<LoginFormDataType>> = (props) => {
@@ -27,5 +27,5 @@ const LoginForm: React.FC<InjectedFormProps<LoginFormDataType>> = (props) => {
     )
 }
 
-const LoginReduxForm =  reduxForm<LoginFormDataType>({form: 'login'})(LoginForm)
+const LoginReduxForm = reduxForm<LoginFormDataType>({form: 'login'})(LoginForm)
 export default LoginReduxForm

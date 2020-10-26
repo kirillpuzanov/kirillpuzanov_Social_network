@@ -1,35 +1,25 @@
-import React, {ChangeEvent} from 'react';
+import React from 'react';
 import s from './MyPosts.module.css';
 import {PostDataType} from "../../../redux/profile-reducer";
 import {Post} from "./Post/Post";
+import TextAreaReduxForm, {TextareaFormDataType} from "../../../common/textareaReduxForm/TextareaReduxForm";
 
 type MyPostsType = {
     postsData: Array<PostDataType>
-    newPostText: string
-    onChangeTextArea: (e: ChangeEvent<HTMLTextAreaElement>) => void
-    addPost: () => void
+    addPost: (newText:string) => void
 }
 
 export function MyPosts(props: MyPostsType) {
 
-    const {addPost, onChangeTextArea, newPostText, postsData} = props
+    const {addPost, postsData} = props
+    const handleSubmit = (formData: TextareaFormDataType)=> addPost(formData.newText)
+
     return (
         <div className={s.myPosts}>
-
-            <div>
-                <textarea value={newPostText}
-                          onChange={onChangeTextArea}
-                />
-            </div>
-            <div>
-                <button
-                    onClick={addPost}
-                >Add new post
-                </button>
-            </div>
+            <TextAreaReduxForm onSubmit={handleSubmit}/>
             <div className={s.posts}>
                 {
-                    postsData.map(post => <Post key={post.id}likes={post.likes} message={post.message}/>)
+                    postsData.map(post => <Post key={post.id} likes={post.likes} message={post.message}/>)
                 }
             </div>
         </div>

@@ -38,7 +38,6 @@ let initialState = {
             {id: v1(), message: 'Hi, how are you?', likes: 7},
             {id: v1(), message: 'Hallo, i am fine!', likes: 10}
         ] as Array<PostDataType>,
-    newPostText: '',
     userProfile: null as null | UserProfileType,
     status: '',
 };
@@ -48,11 +47,8 @@ export const profileReducer = (state = initialState, action: ProfileActionsTypes
 
     switch (action.type) {
         case "ADD_POST": {
-            const newPost = {id: v1(), message: action.newMessage, likes: 0}
-            return {...state, newPostText: '', postsData: [newPost, ...state.postsData]}
-        }
-        case "CHANGE_TEXTAREA": {
-            return {...state, newPostText: action.newText}
+            const newPost = {id: v1(), message: action.newPostText, likes: 0}
+            return {...state, postsData: [newPost, ...state.postsData]}
         }
         case 'SET-USER-PROFILE': {
             return {...state, userProfile: action.userProfile}
@@ -67,10 +63,7 @@ export const profileReducer = (state = initialState, action: ProfileActionsTypes
 
 export const profileActions = {
     addPostActionCreator: (newPostText: string) => ({
-        type: 'ADD_POST', newMessage: newPostText
-    } as const),
-    changeTextAreaActionCreator: (newText: string) => ({
-        type: 'CHANGE_TEXTAREA', newText: newText
+        type: 'ADD_POST', newPostText
     } as const),
     setUserProfileAC: (userProfile: UserProfileType) => ({
         type: 'SET-USER-PROFILE', userProfile

@@ -1,4 +1,4 @@
-import React, {ChangeEvent} from 'react';
+import React from 'react';
 import {PostDataType, profileActions} from "../../../redux/profile-reducer";
 import {MyPosts} from "./MyPosts";
 import {connect} from "react-redux";
@@ -8,11 +8,9 @@ type Maintype = {}
 
 type MapStateToPropsType = {
     postsData: Array<PostDataType>
-    newPostText: string
 }
 type MapDispatchToPropsType = {
     PostActionCreator: (newPostText: string) => void,
-    TextAreaActionCreator: (newText: string) => void
 }
 type MyPostContainerType = Maintype & MapStateToPropsType & MapDispatchToPropsType
 
@@ -20,34 +18,26 @@ type MyPostContainerType = Maintype & MapStateToPropsType & MapDispatchToPropsTy
 
 
 const MyPostContainer = (props: MyPostContainerType) => {
-    const {newPostText, postsData, PostActionCreator, TextAreaActionCreator} = props
+    const {postsData, PostActionCreator} = props
 
-    const onChangeTextArea = (e: ChangeEvent<HTMLTextAreaElement>) => {
-        TextAreaActionCreator(e.currentTarget.value)
-    }
-
-    const addPost = () => {
-        PostActionCreator(newPostText)
+    const addPost = (newText:string) => {
+        PostActionCreator(newText)
     }
 
     return <MyPosts
         postsData={postsData}
-        newPostText={newPostText}
         addPost={addPost}
-        onChangeTextArea={onChangeTextArea}
 
     />
 }
 const mapStateToProps = (state: AppStateType): MapStateToPropsType => {
     return {
         postsData: state.profilePage.postsData,
-        newPostText: state.profilePage.newPostText
     }
 }
 export default connect<MapStateToPropsType, MapDispatchToPropsType, Maintype, AppStateType>(mapStateToProps,
     {
         PostActionCreator: profileActions.addPostActionCreator,
-        TextAreaActionCreator: profileActions.changeTextAreaActionCreator
     })
 (MyPostContainer);
 

@@ -26,30 +26,21 @@ let initialState = {
         {id: v1(), name: 'Kirill'},
         {id: v1(), name: 'Stas'}
     ] as Array<dialogsDataType>,
-    newMessage: ''
 };
 
 
 export const dialogsReducer = (state = initialState, action: ActionsTypes): initialStateType => {
     switch (action.type) {
-        case 'UPDATE_NEW_MESSAGE_BODY': {
-            return {...state, newMessage: action.newMessageBody}
-        }
         case 'SEND_MESSAGE': {
-            let Message = {id: v1(), text: action.sendMessage}
-            return {...state, newMessage: '', messagesData: [Message, ...state.messagesData]}
+            return {...state, messagesData: [{id: v1(), text: action.newMessage}, ...state.messagesData]}
         }
-
         default:
             return state
     }
 }
 
 export const dialogsActions = {
-    sendMessageCreator: (text: string) => ({
-        type: 'SEND_MESSAGE', sendMessage: text
+    sendMessageAC: (newMessage: string) => ({
+        type: 'SEND_MESSAGE', newMessage
     } as const),
-    NewMessageCreator: (text: string) => ({
-        type: 'UPDATE_NEW_MESSAGE_BODY', newMessageBody: text
-    } as const)
 }
