@@ -4,8 +4,8 @@ import {Profile} from "./Profile";
 import {connect} from "react-redux";
 import {AppStateType} from "../../redux/redux-store";
 import {RouteComponentProps, withRouter} from 'react-router-dom';
-//import {WithAuthRedirect} from "../../hoc/WithAuthRedirect";
 import {compose} from "redux";
+import {WithAuthRedirect} from "../../hoc/WithAuthRedirect";
 
 type ProfileContainerType = MapStateToPropsType & MapDispatchToPropsType;
 // PathParamsType типы ожидаемых параметров & ProfileContainerType тип нашей контейнерной компоненты
@@ -62,7 +62,7 @@ export default compose<React.ComponentType>(
         updateStatus: updateStatusTC
     }),
     withRouter,
-    // WithAuthRedirect
+    WithAuthRedirect
 )(ProfileContainer)
 
 

@@ -4,10 +4,10 @@ import {NavLink} from "react-router-dom";
 
 
 type HeaderType = {
-    login: null | number
+    login: null | string
     isFetching: null | boolean
     isAuth: boolean
-
+    logout: () => void
 }
 
 
@@ -20,7 +20,10 @@ export function Header(props: HeaderType) {
             <div className={s.header_loginBlock}>
                 {
                     (props.isAuth)
-                        ? <span> {props.login}</span>
+                        ? <div>
+                            <div>{props.login}</div>
+                            <button onClick={props.logout}> Logout</button>
+                        </div>
                         : <NavLink to={'/login'}>
                             Login
                         </NavLink>

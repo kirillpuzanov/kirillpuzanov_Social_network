@@ -14,9 +14,6 @@ type MapDispatchToPropsType = {
 }
 type MyPostContainerType = Maintype & MapStateToPropsType & MapDispatchToPropsType
 
-
-
-
 const MyPostContainer = (props: MyPostContainerType) => {
     const {postsData, PostActionCreator} = props
 

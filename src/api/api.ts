@@ -26,11 +26,23 @@ export const usersAPI = {
 }
 
 
-export const headerAPI = {
+export const authAPI = {
     authMe() {
         return instance.get<{ data: authDataType, resultCode: number, messages: string[] }>('auth/me')
             .then(response => response.data)
-    }
+    },
+    login(email: string, password: string, rememberMe = false) {
+        return instance.post<{ data: authDataType, resultCode: number, messages: string[],userId: number  }>('auth/login', {
+            email,
+            password,
+            rememberMe
+        }).then(response => response.data)
+    },
+    logout() {
+        return instance.delete<{ data: authDataType, resultCode: number, messages: string[] }>('auth/login')
+            .then(response => response.data)
+    },
+
 
 }
 
@@ -38,11 +50,11 @@ export const profileAPI = {
     getProfile(userId: string) {
         return instance.get<UserProfileType>(`profile/${userId}`)
     },
-    getStatus(userId:string){
+    getStatus(userId: string) {
         return instance.get(`profile/status/${userId}`)
     },
-    updateStatus(status:string){
-        return instance.put(`profile/status/`, {status:status})
-    }
+    updateStatus(status: string) {
+        return instance.put(`profile/status/`, {status: status})
+    },
 }
 
