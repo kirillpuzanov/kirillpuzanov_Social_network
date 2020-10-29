@@ -10,6 +10,7 @@ import { Redirect } from "react-router-dom";
 export const LoginPage: React.FC<MapStateToPropsType & MapDispatchToPropsType> = (props) => {
 
     const onSubmit = (formData: LoginFormDataType) => {
+        console.log(formData)
         props.login(formData.email,formData.password,formData.rememberMe)
     }
     if(props.isAuth){

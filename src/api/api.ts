@@ -32,7 +32,7 @@ export const authAPI = {
             .then(response => response.data)
     },
     login(email: string, password: string, rememberMe = false) {
-        return instance.post<{ data: authDataType, resultCode: number, messages: string[],userId: number  }>('auth/login', {
+        return instance.post<{ data: authDataType, resultCode: number, messages: string[], userId: number  }>('auth/login', {
             email,
             password,
             rememberMe
@@ -47,10 +47,10 @@ export const authAPI = {
 }
 
 export const profileAPI = {
-    getProfile(userId: string) {
+    getProfile(userId: number | null) {
         return instance.get<UserProfileType>(`profile/${userId}`)
     },
-    getStatus(userId: string) {
+    getStatus(userId: number | null) {
         return instance.get(`profile/status/${userId}`)
     },
     updateStatus(status: string) {

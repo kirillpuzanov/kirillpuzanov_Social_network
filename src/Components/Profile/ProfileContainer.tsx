@@ -15,8 +15,8 @@ class ProfileContainer extends React.Component<ProfileContainerTypeWithRouter> {
 
     componentDidMount() {
         // componentDidMount - метод жизненного цикла контейнерной компоненты,  вызывается сразу после монтирования (то есть, вставки компонента в DOM).Это хорошее место для создания  запросов и т.д.
-        let userId: string | number = this.props.match.params.userId;
-        if (!userId) userId = '2';
+        let userId: null | number = +this.props.match.params.userId;
+        if (!userId) userId = this.props.authorizedUserId;
         this.props.getUserProfile(userId);
         this.props.getStatus(userId);
     }
@@ -40,10 +40,12 @@ type PathParamsType = {
 type MapStateToPropsType = {
     userProfile: UserProfileType | null
     status:string
+    authorizedUserId: number | null
+    isAuth: boolean
 };
 type MapDispatchToPropsType = {
-    getUserProfile: (userId: string) => void
-    getStatus:(userId: string) => void
+    getUserProfile: (userId: number | null) => void
+    getStatus:(userId: number | null) => void
     updateStatus:(status: string) => void
 };
 
@@ -51,6 +53,8 @@ let MapStateToProps = (state: AppStateType): MapStateToPropsType => {
     return {
         userProfile: state.profilePage.userProfile,
         status: state.profilePage.status,
+        authorizedUserId:state.auth.userId,
+        isAuth: state.auth.isAuth,
     }
 }
 

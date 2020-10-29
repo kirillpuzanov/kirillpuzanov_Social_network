@@ -1,6 +1,8 @@
 import {AppStateType, InferActionsTypes} from "./redux-store";
 import {ThunkAction} from "redux-thunk";
 import {authAPI} from "../api/api";
+import {stopSubmit} from "redux-form";
+import {FormAction} from "redux-form/lib/actions";
 
 //actions
 export type authActionsType = InferActionsTypes<typeof authActions>
@@ -10,7 +12,7 @@ export const authActions = {
 }
 
 //thunk's
-type thunkType = ThunkAction<void, AppStateType, unknown, authActionsType>
+type thunkType = ThunkAction<void, AppStateType, unknown, authActionsType | FormAction>
 
 export const getAuthUserDataTC = (): thunkType => (dispatch) => {
     authAPI.authMe().then((response) => {
@@ -20,16 +22,19 @@ export const getAuthUserDataTC = (): thunkType => (dispatch) => {
     })
 }
 export const loginTC = (email: string, password: string, rememberMe: boolean ): thunkType => (dispatch) => {
-    authAPI.login(email, password, rememberMe).then((response) => {
+      authAPI.login(email, password, rememberMe).then((response) => {
         if (response.resultCode === 0) {
             dispatch(getAuthUserDataTC())
+        }else{
+            let errorMessage = response.messages.length > 0 ? response.messages[0] : 'Some error';
+            dispatch(stopSubmit('login',{_error:errorMessage}))
         }
     })
 }
 export const logoutTC = (): thunkType => (dispatch) => {
     authAPI.logout().then((response) => {
         if (response.resultCode === 0) {
-            dispatch(authActions.setAuthUserDataAC({id: null,login:null,email:null},false))
+            dispatch(authActions.setAuthUserDataAC({id: null,email:null,login:null},false))
         }
     })
 }
