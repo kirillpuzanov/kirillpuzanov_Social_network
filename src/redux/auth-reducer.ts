@@ -12,10 +12,10 @@ export const authActions = {
 }
 
 //thunk's
-type thunkType = ThunkAction<void, AppStateType, unknown, authActionsType | FormAction>
+type thunkType = ThunkAction<any, AppStateType, unknown, authActionsType | FormAction>
 
 export const getAuthUserDataTC = (): thunkType => (dispatch) => {
-    authAPI.authMe().then((response) => {
+    return authAPI.authMe().then((response) => {
         if (response.resultCode === 0) {
             dispatch(authActions.setAuthUserDataAC(response.data,true))
         }
