@@ -1,11 +1,19 @@
 import React from 'react';
-import {connect} from "react-redux";
-import {followTC, getUsersTC, initialStateUsersType, unfollowTC, usersActions} from "../../redux/users-reducer";
-import {AppStateType} from "../../redux/redux-store";
-import {Users} from "./Users";
-import {Preloader} from "../../common/Preloader/Preloader";
-import {WithAuthRedirect} from "../../hoc/WithAuthRedirect";
-import {compose} from "redux";
+import {connect} from 'react-redux';
+import {followTC, getUsersTC, initialStateUsersType, unfollowTC, usersActions} from '../../redux/users-reducer';
+import {AppStateType} from '../../redux/redux-store';
+import {Users} from './Users';
+import {Preloader} from '../../common/Preloader/Preloader';
+import {WithAuthRedirect} from '../../hoc/WithAuthRedirect';
+import {compose} from 'redux';
+import {
+    getCurrentPage,
+    getFollowingInProgress,
+    getIsFetching,
+    getPageSize,
+    getTotalUsersCount,
+    takeUsers
+} from '../../redux/users-selectors';
 
 
 export type UsersContainerType = MapStateToPropsType & mapDispatchToPropsType;
@@ -47,12 +55,12 @@ export class UsersContainer extends React.Component<UsersContainerType> {
 type MapStateToPropsType = initialStateUsersType
 const mapStateToProps = (state: AppStateType): MapStateToPropsType => {
     return {
-        users: state.usersPage.users,
-        pageSize: state.usersPage.pageSize,
-        totalUsersCount: state.usersPage.totalUsersCount,
-        currentPage: state.usersPage.currentPage,
-        isFetching: state.usersPage.isFetching,
-        followingInProgress: state.usersPage.followingInProgress,
+        users: takeUsers(state),
+        pageSize:getPageSize(state),
+        totalUsersCount: getTotalUsersCount(state),
+        currentPage: getCurrentPage(state),
+        isFetching: getIsFetching(state),
+        followingInProgress: getFollowingInProgress(state),
         userId: state.usersPage.userId,
     }
 }
