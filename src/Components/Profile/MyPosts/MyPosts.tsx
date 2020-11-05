@@ -1,10 +1,10 @@
 import React from 'react';
 import s from './MyPosts.module.css';
-import {PostDataType} from "../../../redux/profile-reducer";
-import {Post} from "./Post/Post";
-import {Field, InjectedFormProps, reduxForm} from "redux-form";
-import {FieldRequired, maxLengthCreator} from "../../../utils/Validator";
-import {Textarea} from "../../../common/FormsControls/FormsControls";
+import {PostDataType} from '../../../redux/profile-reducer';
+import {Post} from './Post/Post';
+import {Field, InjectedFormProps, reduxForm} from 'redux-form';
+import {FieldRequired, maxLengthCreator} from '../../../utils/Validator';
+import {Textarea} from '../../../common/FormsControls/FormsControls';
 
 
 type MyPostsType = {
@@ -12,8 +12,8 @@ type MyPostsType = {
     addPost: (newText: string) => void
 }
 
-export function MyPosts(props: MyPostsType) {
-
+export const MyPosts = React.memo((props: MyPostsType) => {
+    console.log('render myPosts')
     const {addPost, postsData} = props
     const handleSubmit = (formData: NewPostFormDataType) => addPost(formData.newPost)
 
@@ -27,9 +27,12 @@ export function MyPosts(props: MyPostsType) {
             </div>
         </div>
     )
-}
+})
+
+
 const maxLength = maxLengthCreator(20)
 type NewPostFormDataType = { newPost: string }
+
 const NewPostForm: React.FC<InjectedFormProps<NewPostFormDataType>> = (props) => {
 
     return (
@@ -38,7 +41,7 @@ const NewPostForm: React.FC<InjectedFormProps<NewPostFormDataType>> = (props) =>
                 component={Textarea}
                 name='newPost'
                 placeholder='New post'
-                validate={[FieldRequired,maxLength]}
+                validate={[FieldRequired, maxLength]}
             />
             <button> Send</button>
         </form>
