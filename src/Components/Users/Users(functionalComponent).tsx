@@ -1,6 +1,6 @@
 import React from 'react';
 import {UserType} from "../../redux/users-reducer";
-import style from './Users.module.css';
+import style from './User.module.css';
 import axios from 'axios';
 import avaUserDefault from '../../assets/img/user-png-2.png';
 export type UsersType = {

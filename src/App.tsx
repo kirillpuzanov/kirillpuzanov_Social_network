@@ -22,7 +22,6 @@ class App extends React.Component<mapStateToPropsType & mapDispatchToPropsType> 
     componentDidMount() {
         this.props.initializeApp()
     }
-
     render() {
         if(!this.props.initialized) return <Preloader/>
 

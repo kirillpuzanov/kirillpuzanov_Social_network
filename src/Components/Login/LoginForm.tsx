@@ -1,7 +1,7 @@
-import React from "react";
+import React from 'react';
 import {Field, InjectedFormProps, reduxForm} from 'redux-form'
-import {Input} from "../../common/FormsControls/FormsControls";
-import {FieldRequired, maxLengthCreator} from "../../utils/Validator";
+import {Input} from '../../common/FormsControls/FormsControls';
+import {FieldRequired} from '../../utils/Validator';
 import styles from './../../common/FormsControls/FormControl.module.css';
 
 export type LoginFormDataType = {
@@ -11,9 +11,9 @@ export type LoginFormDataType = {
 }
 
 const LoginForm: React.FC<InjectedFormProps<LoginFormDataType>> = (props) => {
-
+    const {handleSubmit,error } = props;
     return (
-        <form onSubmit={props.handleSubmit}>
+        <form onSubmit={handleSubmit}>
             <div>
                 <Field component={Input}
                        type="email"
@@ -30,8 +30,8 @@ const LoginForm: React.FC<InjectedFormProps<LoginFormDataType>> = (props) => {
                        validate={[FieldRequired]}
                 />
             </div>
-            {props.error && <div className={styles.formSummaryError}>
-                {props.error}
+            {error && <div className={styles.formSummaryError}>
+                {error}
             </div>}
             <div>
                 <Field component='input'

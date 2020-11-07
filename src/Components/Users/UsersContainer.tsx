@@ -12,7 +12,6 @@ import {
     getIsFetching,
     getPageSize,
     getTotalUsersCount, takeUsers,
-
 } from '../../redux/users-selectors';
 
 
@@ -36,8 +35,6 @@ export class UsersContainer extends React.Component<UsersContainerType> {
                 {this.props.isFetching ? <Preloader/> : null}
                 <Users
                     users={this.props.users}
-                    followSuccess={this.props.followSuccess}
-                    unFollowSuccess={this.props.unFollowSuccess}
                     pageSize={this.props.pageSize}
                     totalUsersCount={this.props.totalUsersCount}
                     currentPage={this.props.currentPage}
@@ -53,20 +50,19 @@ export class UsersContainer extends React.Component<UsersContainerType> {
 }
 
 type MapStateToPropsType = initialStateUsersType
-const mapStateToProps = (state: AppStateType): MapStateToPropsType => {
-    return {
+const mapStateToProps = (state: AppStateType): MapStateToPropsType => (
+    {
         users: takeUsers(state),
-        pageSize:getPageSize(state),
+        pageSize: getPageSize(state),
         totalUsersCount: getTotalUsersCount(state),
         currentPage: getCurrentPage(state),
         isFetching: getIsFetching(state),
         followingInProgress: getFollowingInProgress(state),
         userId: state.usersPage.userId,
     }
-}
+)
+
 type mapDispatchToPropsType = {
-    followSuccess: (userId: string) => void
-    unFollowSuccess: (userId: string) => void
     setCurrentPage: (currentPage: number) => void
     toggleIsFetching: (isFetching: boolean) => void
     getUsers: (currentPage: number, pageSize: number) => void
@@ -74,8 +70,6 @@ type mapDispatchToPropsType = {
     unfollow: (userId: string) => void
 }
 const mapDispatchToProps = {
-    followSuccess: usersActions.followSuccessAC,
-    unFollowSuccess: usersActions.unFollowSuccessAC,
     setCurrentPage: usersActions.setCurrentPageAC,
     toggleIsFetching: usersActions.toggleIsFetchingAC,
     getUsers: getUsersTC,
