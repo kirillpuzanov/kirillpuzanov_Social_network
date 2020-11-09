@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import {NavBar} from './Components/NavBar/NavBar'
-import {Route, withRouter} from 'react-router-dom';
+import {BrowserRouter, Route, withRouter} from 'react-router-dom';
 import {News} from './Components/News/News';
 import {Music} from './Components/Music/Music';
 import {Settings} from './Components/Settings/Settings';
@@ -10,8 +10,8 @@ import UsersContainer from './Components/Users/UsersContainer';
 import ProfileContainer from './Components/Profile/ProfileContainer';
 import HeaderContainer from './Components/Header/HeaderContainer';
 import LoginPage from './Components/Login/Login';
-import {connect} from 'react-redux';
-import {AppStateType} from './redux/redux-store';
+import {connect, Provider} from 'react-redux';
+import {AppStateType, store} from './redux/redux-store';
 import {initializeAppTC} from './redux/app-reducer';
 import {compose} from 'redux';
 import {Preloader} from './common/Preloader/Preloader';
@@ -22,8 +22,9 @@ class App extends React.Component<mapStateToPropsType & mapDispatchToPropsType> 
     componentDidMount() {
         this.props.initializeApp()
     }
+
     render() {
-        if(!this.props.initialized) return <Preloader/>
+        if (!this.props.initialized) return <Preloader/>
 
         return (
             <div className='App_wrapper'>
@@ -46,7 +47,6 @@ class App extends React.Component<mapStateToPropsType & mapDispatchToPropsType> 
                     <Route render={() => <News/>} path={'/news'}/>
                     <Route render={() => <Music/>} path={'/music'}/>
                     <Route render={() => <Settings/>} path={'/settings'}/>
-                    {/*<Route render={() => <Friends myFriends={state.sideBar.myFriends}/>} path={'/friends'}/>*/}
                 </div>
             </div>
         );
@@ -54,19 +54,27 @@ class App extends React.Component<mapStateToPropsType & mapDispatchToPropsType> 
 }
 
 
-
 type mapDispatchToPropsType = {
-    initializeApp: ()=> void
+    initializeApp: () => void
 }
 type mapStateToPropsType = {
-    initialized:boolean
+    initialized: boolean
 }
 
 const mapStateToProps = (state: AppStateType) => ({
     initialized: state.app.initialized
 })
-export default compose<React.ComponentType>(
+const AppContainer = compose<React.ComponentType>(
     withRouter,
-    connect<mapStateToPropsType,mapDispatchToPropsType,{},AppStateType>(mapStateToProps, {initializeApp:initializeAppTC}))
+    connect<mapStateToPropsType, mapDispatchToPropsType, {}, AppStateType>(mapStateToProps, {initializeApp: initializeAppTC}))
 (App);
+
+
+export const WrappedApp: React.FC = () => {
+    return <BrowserRouter>
+        <Provider store={store}>
+            <AppContainer/>
+        </Provider>
+    </BrowserRouter>
+}
 

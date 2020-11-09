@@ -40,7 +40,6 @@ export class ProfileStatus extends React.Component<ProfileStatusType, LocalState
         }
     }
 
-
     render() {
         return (
             <div>
