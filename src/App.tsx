@@ -1,11 +1,10 @@
-import React from 'react';
+import React, {Suspense} from 'react';
 import './App.css';
 import {NavBar} from './Components/NavBar/NavBar'
 import {BrowserRouter, Route, withRouter} from 'react-router-dom';
 import {News} from './Components/News/News';
 import {Music} from './Components/Music/Music';
 import {Settings} from './Components/Settings/Settings';
-import DialogsContainer from './Components/Dialogs/DialogsContainer';
 import UsersContainer from './Components/Users/UsersContainer';
 import ProfileContainer from './Components/Profile/ProfileContainer';
 import HeaderContainer from './Components/Header/HeaderContainer';
@@ -15,7 +14,9 @@ import {AppStateType, store} from './redux/redux-store';
 import {initializeAppTC} from './redux/app-reducer';
 import {compose} from 'redux';
 import {Preloader} from './common/Preloader/Preloader';
+import {WithSuspense} from './hoc/WithSuspense';
 
+const DialogsContainer = React.lazy(() => import('./Components/Dialogs/DialogsContainer'));
 
 class App extends React.Component<mapStateToPropsType & mapDispatchToPropsType> {
 
@@ -38,12 +39,11 @@ class App extends React.Component<mapStateToPropsType & mapDispatchToPropsType> 
                            render={() => <LoginPage/>}
                     />
                     <Route path={'/dialogs'}
-                           render={() => <DialogsContainer/>}
+                               render={WithSuspense(DialogsContainer)}
                     />
                     <Route path={'/users'}
                            render={() => <UsersContainer/>}
                     />
-
                     <Route render={() => <News/>} path={'/news'}/>
                     <Route render={() => <Music/>} path={'/music'}/>
                     <Route render={() => <Settings/>} path={'/settings'}/>
@@ -60,7 +60,6 @@ type mapDispatchToPropsType = {
 type mapStateToPropsType = {
     initialized: boolean
 }
-
 const mapStateToProps = (state: AppStateType) => ({
     initialized: state.app.initialized
 })

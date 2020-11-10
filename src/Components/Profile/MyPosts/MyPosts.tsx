@@ -13,7 +13,6 @@ type MyPostsType = {
 }
 
 export const MyPosts = React.memo((props: MyPostsType) => {
-    console.log('render myPosts')
     const {addPost, postsData} = props
     const handleSubmit = (formData: NewPostFormDataType) => addPost(formData.newPost)
 
