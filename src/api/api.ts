@@ -1,7 +1,7 @@
 import axios from "axios";
 import {UserType} from "../redux/users-reducer";
 import {authDataType} from "../redux/auth-reducer";
-import {UserProfileType} from "../redux/profile-reducer";
+import {UserProfilePhotosType, UserProfileType} from '../redux/profile-reducer';
 
 
 const instance = axios.create({
@@ -12,38 +12,36 @@ const instance = axios.create({
 
 export const usersAPI = {
     getUsers(currentPage: number, pageSize: number) {
-        return instance.get<{ items: Array<UserType>, totalCount: number, error: null | string }>(`users?page=${currentPage}&count=${pageSize}`)
+        return instance.get<GetItemsType>(`users?page=${currentPage}&count=${pageSize}`)
             .then(response => response.data)
     },
 
     unfollow(userId: string) {
-        return instance.delete<{ resultCode: number, messages: string[], data: any }>(`follow/${userId}`)
+        return instance.delete<GetItemsType>(`follow/${userId}`)
     },
 
     follow(userId: string) {
-        return instance.post<{ resultCode: number, messages: string[], data: any }>(`follow/${userId}`)
+        return instance.post<ResponseType>(`follow/${userId}`)
     },
 }
 
 
 export const authAPI = {
     authMe() {
-        return instance.get<{ data: authDataType, resultCode: number, messages: string[] }>('auth/me')
+        return instance.get<ResponseType<authDataType>>/*<{ data: authDataType, resultCode: number, messages: string[] }>*/('auth/me')
             .then(response => response.data)
     },
     login(email: string, password: string, rememberMe = false) {
-        return instance.post<{ data: authDataType, resultCode: number, messages: string[], userId: number  }>('auth/login', {
+        return instance.post<ResponseType<{ userId: number }>>/*<{ data: authDataType, resultCode: number, messages: string[], userId: number  }>*/('auth/login', {
             email,
             password,
             rememberMe
         }).then(response => response.data)
     },
     logout() {
-        return instance.delete<{ data: authDataType, resultCode: number, messages: string[] }>('auth/login')
+        return instance.delete<ResponseType<authDataType>>/*<{ data: authDataType, resultCode: number, messages: string[] }>*/('auth/login')
             .then(response => response.data)
     },
-
-
 }
 
 export const profileAPI = {
@@ -56,5 +54,23 @@ export const profileAPI = {
     updateStatus(status: string) {
         return instance.put(`profile/status/`, {status: status})
     },
+    updatePhoto(photoFile:File) {
+        const formData = new FormData();
+        formData.append('image',photoFile)
+        return instance.put<ResponseType<UpdatePhotoResDataType>>(`profile/photo`, formData)
+            .then(response => response.data)
+    },
 }
 
+type UpdatePhotoResDataType = {photos:UserProfilePhotosType}
+export type ResponseType<D = {}> = {
+    data: D
+    messages: Array<string>
+    resultCode: 0 | 1 | 10
+}
+
+export type GetItemsType = {
+    items: Array<UserType>
+    totalCount: number
+    error: string | null
+}

@@ -1,10 +1,8 @@
-import React, {Suspense} from 'react';
+import React from 'react';
 import './App.css';
 import {NavBar} from './Components/NavBar/NavBar'
-import {BrowserRouter, Route, withRouter} from 'react-router-dom';
-import {News} from './Components/News/News';
+import {HashRouter, Route, withRouter} from 'react-router-dom';
 import {Music} from './Components/Music/Music';
-import {Settings} from './Components/Settings/Settings';
 import UsersContainer from './Components/Users/UsersContainer';
 import ProfileContainer from './Components/Profile/ProfileContainer';
 import HeaderContainer from './Components/Header/HeaderContainer';
@@ -33,7 +31,8 @@ class App extends React.Component<mapStateToPropsType & mapDispatchToPropsType> 
                 <NavBar/>
                 <div className='App_wrapper__content'>
                     <Route path={'/profile/:userId?'}
-                           render={() => <ProfileContainer/>}
+                           // render={() => <ProfileContainer/>}
+                           render={WithSuspense(ProfileContainer)}
                     />
                     <Route path={'/login'}
                            render={() => <LoginPage/>}
@@ -44,9 +43,7 @@ class App extends React.Component<mapStateToPropsType & mapDispatchToPropsType> 
                     <Route path={'/users'}
                            render={() => <UsersContainer/>}
                     />
-                    <Route render={() => <News/>} path={'/news'}/>
                     <Route render={() => <Music/>} path={'/music'}/>
-                    <Route render={() => <Settings/>} path={'/settings'}/>
                 </div>
             </div>
         );
@@ -70,10 +67,10 @@ const AppContainer = compose<React.ComponentType>(
 
 
 export const WrappedApp: React.FC = () => {
-    return <BrowserRouter>
+    return <HashRouter>
         <Provider store={store}>
             <AppContainer/>
         </Provider>
-    </BrowserRouter>
+    </HashRouter>
 }
 

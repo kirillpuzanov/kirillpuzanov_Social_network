@@ -1,16 +1,24 @@
 
 .nav {
-    background-color: bisque;
+
     grid-area: n;
     padding: 20px;
 }
-.item a{
-    color: #ffffff;
-    text-decoration: none;
+
+.item {
     margin-top: 10px;
 }
-.item a.activeLink{
+
+.item a {
+
+    font-size: 20px;
+    text-decoration: none;
+    color: #517eea;
+
+}
+
+.item a.activeLink {
     color: blue;
-    margin: 10px;
+    margin-left: 20px;
     transition: all 0.5s;
 }

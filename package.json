@@ -1,5 +1,6 @@
 {
   "name": "my-app",
+  "homepage": "http://kirillpuzanov.github.io/Social_network",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

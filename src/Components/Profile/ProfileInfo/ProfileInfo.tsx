@@ -9,6 +9,8 @@ type ProfileInfoType = {
     userProfile: UserProfileType | null
     status: string
     updateStatus: (status: string) => void
+    isOwner: boolean
+    savePhoto: (file: File) => void
 }
 let style = {
     width: '60px',
@@ -16,21 +18,32 @@ let style = {
 }
 
 export const ProfileInfo = (props: ProfileInfoType) => {
-    if (!props.userProfile) return <Preloader/>
+    const {userProfile, status, updateStatus, isOwner, savePhoto} = props;
+    if (!userProfile) return <Preloader/>
+
+    const onPhotoSelected = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const photoFile = e.target.files;
+        if (photoFile && photoFile.length) {
+            savePhoto(photoFile[0])
+        }
+    }
+
 
     return (<>
-            <div>
-                <img
-                    src="https://fs.tonkosti.ru/sized/c1600x400/0r/77/rm/zc/xe/hc/80/go/08/08/kc/4k/0r77rmzcxehc80go0808kc4kc.jpg"
-                    alt="img"/>
-            </div>
+            {/*<div>*/}
+            {/*    <img*/}
+            {/*        src="https://fs.tonkosti.ru/sized/c1600x400/0r/77/rm/zc/xe/hc/80/go/08/08/kc/4k/0r77rmzcxehc80go0808kc4kc.jpg"*/}
+            {/*        alt="img"/>*/}
+            {/*</div>*/}
             <div>
                 <img style={style}
-                     src={props.userProfile.photos.small !== null ? props.userProfile.photos.small : avaUserDefault}
-                     alt="userPhoto"/>
+                     src={userProfile.photos.small || avaUserDefault}
+                     alt="userPhoto"
+                />
+                {isOwner && <input type="file" onChange={onPhotoSelected}/>}
                 <ProfileStatus
-                    status={props.status}
-                    updateStatus={props.updateStatus}
+                    status={status}
+                    updateStatus={updateStatus}
                 />
             </div>
         </>

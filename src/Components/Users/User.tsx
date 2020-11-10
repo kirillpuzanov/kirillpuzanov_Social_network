@@ -10,7 +10,6 @@ type UsersType = {
     followingInProgress: string[]
     follow: (userId: string) => void
     unfollow: (userId: string) => void
-
 }
 
 export const User = (props: UsersType) => {

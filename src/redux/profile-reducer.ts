@@ -15,6 +15,9 @@ export const profileActions = {
     setStatusAC: (status: string) => ({
         type: '/PROFILE/SET-STATUS', status
     } as const),
+    updatePhotoAC: (photos:UserProfilePhotosType) => ({
+        type: '/PROFILE/UPDATE-PHOTO', photos
+    } as const),
 }
 
 //thunk's
@@ -36,6 +39,13 @@ export const updateStatusTC = (status: string): thunkType => async (dispatch) =>
     }
 }
 
+export const updatePhotoTC = (file:File): thunkType => async (dispatch) => {
+    let response = await profileAPI.updatePhoto(file)
+    if (response.resultCode === 0) {
+        dispatch(profileActions.updatePhotoAC(response.data.photos))
+    }
+}
+
 let initialState = {
     postsData:
         [
@@ -43,7 +53,7 @@ let initialState = {
             {id: v1(), message: 'Hi, how are you?', likes: 7},
             {id: v1(), message: 'Hallo, i am fine!', likes: 10}
         ] as Array<PostDataType>,
-    userProfile: null as null | UserProfileType,
+    userProfile: null as UserProfileType | null,
     status: '',
 };
 export type InitialStateProfileType = typeof initialState;
@@ -60,6 +70,9 @@ export const profileReducer = (state = initialState, action: ProfileActionsTypes
         }
         case '/PROFILE/SET-STATUS': {
             return {...state, status: action.status}
+        }
+        case '/PROFILE/UPDATE-PHOTO':{
+            return{ ...state, userProfile: {...state.userProfile, photos:action.photos} as UserProfileType}
         }
         default:
             return state
@@ -82,6 +95,10 @@ type contactsType = {
     github: string
     mainLink: string
 }
+export type UserProfilePhotosType = {
+    small: string
+    large: string
+}
 export type UserProfileType = {
     aboutMe: string
     contacts: contactsType
@@ -89,5 +106,5 @@ export type UserProfileType = {
     lookingForAJobDescription: string
     fullName: string
     userId: number
-    photos: { small: string; large: string };
+    photos: UserProfilePhotosType
 }

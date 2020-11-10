@@ -1,5 +1,11 @@
 import React from 'react';
-import {getStatusTC, getUserProfileTC, updateStatusTC, UserProfileType} from '../../redux/profile-reducer';
+import {
+    getStatusTC,
+    getUserProfileTC,
+    updatePhotoTC,
+    updateStatusTC,
+    UserProfileType
+} from '../../redux/profile-reducer';
 import {Profile} from './Profile';
 import {connect} from 'react-redux';
 import {AppStateType} from '../../redux/redux-store';
@@ -11,10 +17,9 @@ type ProfileContainerType = MapStateToPropsType & MapDispatchToPropsType;
 // PathParamsType типы ожидаемых параметров & ProfileContainerType тип нашей контейнерной компоненты
 type ProfileContainerTypeWithRouter = RouteComponentProps<PathParamsType> & ProfileContainerType
 
-class ProfileContainer extends React.Component<ProfileContainerTypeWithRouter> {
+class ProfileContainer extends React.PureComponent<ProfileContainerTypeWithRouter> {
 
-    componentDidMount() {
-        // componentDidMount - метод жизненного цикла контейнерной компоненты,  вызывается сразу после монтирования (то есть, вставки компонента в DOM).Это хорошее место для создания  запросов и т.д.
+    refreshProfile() {
         let userId: null | number = +this.props.match.params.userId;
         if (!userId) {
             userId = this.props.authorizedUserId;
@@ -26,6 +31,18 @@ class ProfileContainer extends React.Component<ProfileContainerTypeWithRouter> {
         this.props.getStatus(userId);
     }
 
+    componentDidMount() {
+        // componentDidMount - метод жизненного цикла контейнерной компоненты,  вызывается сразу после монтирования (то есть, вставки компонента в DOM).Это хорошее место для создания  запросов и т.д.
+       this.refreshProfile()
+    }
+    componentDidUpdate(prevProps: Readonly<ProfileContainerTypeWithRouter>, prevState: Readonly<{}>) {
+
+        // componentDidMount - метод жизненного цикла контейнерной компоненты,  вызывается при каждом изменении Props или State
+        if(this.props.match.params.userId !== prevProps.match.params.userId ){
+            this.refreshProfile()
+        }
+    }
+
     render() {
         return (
             <div>
@@ -33,6 +50,8 @@ class ProfileContainer extends React.Component<ProfileContainerTypeWithRouter> {
                          userProfile={this.props.userProfile}
                          status={this.props.status}
                          updateStatus={this.props.updateStatus}
+                         isOwner = {!this.props.match.params.userId}
+                         savePhoto={this.props.savePhoto}
                 />
             </div>
         )
@@ -52,6 +71,7 @@ type MapDispatchToPropsType = {
     getUserProfile: (userId: number | null) => void
     getStatus: (userId: number | null) => void
     updateStatus: (status: string) => void
+    savePhoto: (file: File) => void
 };
 
 let MapStateToProps = (state: AppStateType): MapStateToPropsType => {
@@ -68,7 +88,8 @@ export default compose<React.ComponentType>(
     connect<MapStateToPropsType, MapDispatchToPropsType, {}, AppStateType>(MapStateToProps, {
         getUserProfile: getUserProfileTC,
         getStatus: getStatusTC,
-        updateStatus: updateStatusTC
+        updateStatus: updateStatusTC,
+        savePhoto: updatePhotoTC,
     }),
     withRouter,
     WithAuthRedirect

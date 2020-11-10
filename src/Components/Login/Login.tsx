@@ -21,6 +21,11 @@ export const LoginPage: React.FC<MapStateToPropsType & MapDispatchToPropsType> =
         <div>
             <h1> LOGIN </h1>
             <LoginReduxForm onSubmit={onSubmit}/>
+            <div>
+                <p><b>For Testing:</b></p>
+                <p>Email: free@samuraijs.com</p>
+                <p>Password: free</p>
+            </div>
         </div>
     )
 }

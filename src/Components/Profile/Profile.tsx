@@ -7,7 +7,9 @@ import {UserProfileType} from "../../redux/profile-reducer";
 type ProfilePropsType ={
     userProfile: UserProfileType | null
     status:string
+    isOwner: boolean
     updateStatus:(status: string) => void
+    savePhoto: (file: File) => void
 }
 
 export function Profile(props:ProfilePropsType) {
@@ -17,6 +19,8 @@ export function Profile(props:ProfilePropsType) {
                 userProfile={props.userProfile}
                 updateStatus={props.updateStatus}
                 status={props.status}
+                isOwner={props.isOwner}
+                savePhoto={props.savePhoto}
             />
             <MyPostsContainer/>
         </div>
