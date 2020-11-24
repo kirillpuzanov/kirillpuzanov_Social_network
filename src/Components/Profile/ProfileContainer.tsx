@@ -2,6 +2,7 @@ import React from 'react';
 import {
     getStatusTC,
     getUserProfileTC,
+    saveProfileTC,
     updatePhotoTC,
     updateStatusTC,
     UserProfileType
@@ -33,12 +34,13 @@ class ProfileContainer extends React.PureComponent<ProfileContainerTypeWithRoute
 
     componentDidMount() {
         // componentDidMount - метод жизненного цикла контейнерной компоненты,  вызывается сразу после монтирования (то есть, вставки компонента в DOM).Это хорошее место для создания  запросов и т.д.
-       this.refreshProfile()
+        this.refreshProfile()
     }
+
     componentDidUpdate(prevProps: Readonly<ProfileContainerTypeWithRouter>, prevState: Readonly<{}>) {
 
         // componentDidMount - метод жизненного цикла контейнерной компоненты,  вызывается при каждом изменении Props или State
-        if(this.props.match.params.userId !== prevProps.match.params.userId ){
+        if (this.props.match.params.userId !== prevProps.match.params.userId) {
             this.refreshProfile()
         }
     }
@@ -50,8 +52,9 @@ class ProfileContainer extends React.PureComponent<ProfileContainerTypeWithRoute
                          userProfile={this.props.userProfile}
                          status={this.props.status}
                          updateStatus={this.props.updateStatus}
-                         isOwner = {!this.props.match.params.userId}
+                         isOwner={!this.props.match.params.userId}
                          savePhoto={this.props.savePhoto}
+                         saveProfile={this.props.saveProfile}
                 />
             </div>
         )
@@ -72,6 +75,7 @@ type MapDispatchToPropsType = {
     getStatus: (userId: number | null) => void
     updateStatus: (status: string) => void
     savePhoto: (file: File) => void
+    saveProfile: (profile: UserProfileType) => Promise<any>
 };
 
 let MapStateToProps = (state: AppStateType): MapStateToPropsType => {
@@ -85,11 +89,12 @@ let MapStateToProps = (state: AppStateType): MapStateToPropsType => {
 
 
 export default compose<React.ComponentType>(
-    connect<MapStateToPropsType, MapDispatchToPropsType, {}, AppStateType>(MapStateToProps, {
+    connect(MapStateToProps, {
         getUserProfile: getUserProfileTC,
         getStatus: getStatusTC,
         updateStatus: updateStatusTC,
         savePhoto: updatePhotoTC,
+        saveProfile: saveProfileTC,
     }),
     withRouter,
     WithAuthRedirect

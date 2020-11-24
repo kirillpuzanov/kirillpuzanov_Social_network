@@ -1,8 +1,8 @@
 import React from 'react';
 import c from './ProFile.module.css';
-import {ProfileInfo} from "./ProfileInfo/ProfileInfo";
-import MyPostsContainer from "./MyPosts/MyPostsContainer";
-import {UserProfileType} from "../../redux/profile-reducer";
+import {ProfileInfo} from './ProfileInfo/ProfileInfo';
+import MyPostsContainer from './MyPosts/MyPostsContainer';
+import {UserProfileType} from '../../redux/profile-reducer';
 
 type ProfilePropsType ={
     userProfile: UserProfileType | null
@@ -10,6 +10,7 @@ type ProfilePropsType ={
     isOwner: boolean
     updateStatus:(status: string) => void
     savePhoto: (file: File) => void
+    saveProfile: (profile: UserProfileType) => Promise<any>
 }
 
 export function Profile(props:ProfilePropsType) {
@@ -21,6 +22,7 @@ export function Profile(props:ProfilePropsType) {
                 status={props.status}
                 isOwner={props.isOwner}
                 savePhoto={props.savePhoto}
+                saveProfile={props.saveProfile}
             />
             <MyPostsContainer/>
         </div>

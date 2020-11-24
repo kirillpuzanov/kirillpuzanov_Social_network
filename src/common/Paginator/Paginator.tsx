@@ -9,7 +9,6 @@ type PaginatorType = {
     onPageChanged: (pageNumber: number) => void
 }
 
-
 export const Paginator = (props: PaginatorType) => {
     const {pageSize, totalUsersCount, currentPage, onPageChanged, portionSize = 10} = props
 
@@ -20,6 +19,7 @@ export const Paginator = (props: PaginatorType) => {
     }
 
     let portionCount = Math.ceil(pagesCount / portionSize);
+
     let [portionNumber, setPortionNumber] = useState(1);
 
     let leftPortionPageNumber = (portionNumber - 1) * portionSize + 1;

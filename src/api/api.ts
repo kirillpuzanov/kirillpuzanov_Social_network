@@ -1,6 +1,6 @@
-import axios from "axios";
-import {UserType} from "../redux/users-reducer";
-import {authDataType} from "../redux/auth-reducer";
+import axios from 'axios';
+import {UserType} from '../redux/users-reducer';
+import {authDataType} from '../redux/auth-reducer';
 import {UserProfilePhotosType, UserProfileType} from '../redux/profile-reducer';
 
 
@@ -28,18 +28,26 @@ export const usersAPI = {
 
 export const authAPI = {
     authMe() {
-        return instance.get<ResponseType<authDataType>>/*<{ data: authDataType, resultCode: number, messages: string[] }>*/('auth/me')
+        return instance.get<ResponseType<authDataType>>('auth/me')
             .then(response => response.data)
     },
-    login(email: string, password: string, rememberMe = false) {
-        return instance.post<ResponseType<{ userId: number }>>/*<{ data: authDataType, resultCode: number, messages: string[], userId: number  }>*/('auth/login', {
+    login(email: string, password: string, rememberMe = false, captcha: string) {
+        return instance.post<ResponseType<{ userId: number }>>('auth/login', {
             email,
             password,
-            rememberMe
+            rememberMe,
+            captcha
         }).then(response => response.data)
     },
     logout() {
-        return instance.delete<ResponseType<authDataType>>/*<{ data: authDataType, resultCode: number, messages: string[] }>*/('auth/login')
+        return instance.delete<ResponseType<authDataType>>('auth/login')
+            .then(response => response.data)
+    },
+}
+
+export const securityAPI = {
+    getCaptchaUrl() {
+        return instance.get<{ url: string }>('security/get-captcha-url')
             .then(response => response.data)
     },
 }
@@ -54,15 +62,19 @@ export const profileAPI = {
     updateStatus(status: string) {
         return instance.put(`profile/status/`, {status: status})
     },
-    updatePhoto(photoFile:File) {
+    updatePhoto(photoFile: File) {
         const formData = new FormData();
-        formData.append('image',photoFile)
+        formData.append('image', photoFile)
         return instance.put<ResponseType<UpdatePhotoResDataType>>(`profile/photo`, formData)
             .then(response => response.data)
     },
+    saveProfile(profile: UserProfileType) {
+        return instance.put<ResponseType>(`profile`, profile)
+            .then((res) => res.data)
+    },
 }
 
-type UpdatePhotoResDataType = {photos:UserProfilePhotosType}
+type UpdatePhotoResDataType = { photos: UserProfilePhotosType }
 export type ResponseType<D = {}> = {
     data: D
     messages: Array<string>

@@ -12,8 +12,10 @@ type RootReducersType = typeof reducers
 export type AppStateType = ReturnType<RootReducersType>;
 
 
-type PropertiesTypes<T> = T extends { [key: string]: infer U } ? U : never
-export type InferActionsTypes<T extends { [key: string]: (...args: any[]) => any }> = ReturnType<PropertiesTypes<T>>
+// type PropertiesTypes<T> = T extends { [key: string]: infer U } ? U : never
+// export type InferActionsTypes<T extends { [key: string]: (...args: any[]) => any }> = ReturnType<PropertiesTypes<T>>
+
+export type InferActionsTypes<T> = T extends { [keys: string]: (...args: any[]) => infer U } ? U : never
 
 
 let reducers = combineReducers({
@@ -31,3 +33,7 @@ export const store = createStore(reducers, composeEnhancers(applyMiddleware(thun
 
 // @ts-ignore
 window._store_ = store
+
+// типизация санкр
+// type ThunkType = BaseThunkType<ProfileActionsTypes | FormAction>
+// export type BaseThunkType<A extends Action = Action, R = Promise<void>> = ThunkAction<R, AppStateType, unknown, A>

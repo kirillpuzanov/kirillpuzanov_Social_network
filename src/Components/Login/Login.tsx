@@ -11,7 +11,7 @@ export const LoginPage: React.FC<MapStateToPropsType & MapDispatchToPropsType> =
 
     const onSubmit = (formData: LoginFormDataType) => {
         console.log(formData)
-        props.login(formData.email,formData.password,formData.rememberMe)
+        props.login(formData.email,formData.password,formData.rememberMe,formData.captcha)
     }
     if(props.isAuth){
         return <Redirect to={'/profile'}/>
@@ -20,7 +20,7 @@ export const LoginPage: React.FC<MapStateToPropsType & MapDispatchToPropsType> =
     return (
         <div>
             <h1> LOGIN </h1>
-            <LoginReduxForm onSubmit={onSubmit}/>
+            <LoginReduxForm capthaUrl={props.capthaUrl} onSubmit={onSubmit}/>
             <div>
                 <p><b>For Testing:</b></p>
                 <p>Email: free@samuraijs.com</p>
@@ -31,12 +31,13 @@ export const LoginPage: React.FC<MapStateToPropsType & MapDispatchToPropsType> =
 }
 
 type MapDispatchToPropsType = {
-    login: (email: string, password: string, rememberMe: boolean) => void
+    login: (email: string, password: string, rememberMe: boolean,captcha:string) => void
     logout: () => void
 }
-type MapStateToPropsType = { isAuth:boolean}
+type MapStateToPropsType = { isAuth:boolean,capthaUrl:string | null}
 const MapStateToProps = (state:AppStateType)=> ({
-    isAuth: state.auth.isAuth
+    isAuth: state.auth.isAuth,
+    capthaUrl: state.auth.capthaUrl
 })
 
 export default connect<MapStateToPropsType, MapDispatchToPropsType, {}, AppStateType>(MapStateToProps, {
