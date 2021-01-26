@@ -17,11 +17,13 @@ export const usersAPI = {
     },
 
     unfollow(userId: string) {
-        return instance.delete<GetItemsType>(`follow/${userId}`)
+        return instance.delete<ResponseType>(`follow/${userId}`)
+            .then(res => res.data)
     },
 
     follow(userId: string) {
         return instance.post<ResponseType>(`follow/${userId}`)
+            .then(res => res.data)
     },
 }
 
@@ -32,9 +34,8 @@ export const authAPI = {
             .then(response => response.data)
     },
     login(email: string, password: string, rememberMe = false, captcha: string) {
-        return instance.post<ResponseType<{ userId: number }>>('auth/login', {
+        return instance.post<ResponseType<LoginResponseDataType, ResultCodesEnum | ResultCodeForCapcthaEnum>>('auth/login', {
             email,
-            password,
             rememberMe,
             captcha
         }).then(response => response.data)
@@ -75,14 +76,27 @@ export const profileAPI = {
 }
 
 type UpdatePhotoResDataType = { photos: UserProfilePhotosType }
-export type ResponseType<D = {}> = {
+
+export type ResponseType<D = {}, RC = ResultCodesEnum> = {
     data: D
     messages: Array<string>
-    resultCode: 0 | 1 | 10
+    resultCode: RC
+}
+type LoginResponseDataType = {
+    userId: number
 }
 
 export type GetItemsType = {
     items: Array<UserType>
     totalCount: number
     error: string | null
+}
+
+export enum ResultCodesEnum {
+    Success = 0,
+    Error = 1
+}
+
+export enum ResultCodeForCapcthaEnum {
+    CaptchaIsRequired = 10
 }

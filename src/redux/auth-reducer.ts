@@ -1,6 +1,6 @@
 import {AppStateType, InferActionsTypes} from './redux-store';
 import {ThunkAction} from 'redux-thunk';
-import {authAPI, securityAPI} from '../api/api';
+import {authAPI, ResultCodeForCapcthaEnum, ResultCodesEnum, securityAPI} from '../api/api';
 import {stopSubmit} from 'redux-form';
 import {FormAction} from 'redux-form/lib/actions';
 
@@ -46,17 +46,17 @@ type thunkType = ThunkAction<any, AppStateType, unknown, authActionsType | FormA
 
 export const getAuthUserDataTC = (): thunkType => async (dispatch) => {
     let response = await authAPI.authMe();
-    if (response.resultCode === 0) {
+    if (response.resultCode === ResultCodesEnum.Success) {
         dispatch(authActions.setAuthUserDataAC(response.data, true))
     }
 }
 
 export const loginTC = (email: string, password: string, rememberMe: boolean,captcha:string): thunkType => async (dispatch) => {
     let response = await authAPI.login(email, password, rememberMe,captcha);
-    if (response.resultCode === 0) {
+    if (response.resultCode === ResultCodesEnum.Success) {
         dispatch(getAuthUserDataTC())
     } else {
-        if (response.resultCode === 10) {
+        if (response.resultCode === ResultCodeForCapcthaEnum.CaptchaIsRequired) {
             dispatch(getCapthaUrlTC())
         }
         let errorMessage = response.messages.length > 0 ? response.messages[0] : 'Some error';
@@ -65,7 +65,7 @@ export const loginTC = (email: string, password: string, rememberMe: boolean,cap
 }
 export const logoutTC = (): thunkType => async (dispatch) => {
     let response = await authAPI.logout()
-    if (response.resultCode === 0) {
+    if (response.resultCode === ResultCodesEnum.Success) {
         dispatch(authActions.setAuthUserDataAC({id: null, email: null, login: null}, false))
     }
 }

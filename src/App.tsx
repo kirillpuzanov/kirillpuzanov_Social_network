@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import {NavBar} from './Components/NavBar/NavBar'
-import {HashRouter, Route, withRouter} from 'react-router-dom';
+import {HashRouter, Route, withRouter, Switch, Redirect} from 'react-router-dom';
 import {Music} from './Components/Music/Music';
 import UsersContainer from './Components/Users/UsersContainer';
 import ProfileContainer from './Components/Profile/ProfileContainer';
@@ -30,20 +30,29 @@ class App extends React.Component<mapStateToPropsType & mapDispatchToPropsType> 
                 <HeaderContainer/>
                 <NavBar/>
                 <div className='App_wrapper__content'>
-                    <Route path={'/profile/:userId?'}
-                           // render={() => <ProfileContainer/>}
-                           render={WithSuspense(ProfileContainer)}
-                    />
-                    <Route path={'/login'}
-                           render={() => <LoginPage/>}
-                    />
-                    <Route path={'/dialogs'}
+                    <Switch>
+                        <Route exact path={'/'}
+                               render={() => <Redirect to={'/profile'}/>}
+                        />
+                        <Route path={'/profile/:userId?'}
+                               render={WithSuspense(ProfileContainer)}
+                        />
+                        <Route path={'/login'}
+                               render={() => <LoginPage/>}
+                        />
+                        <Route path={'/dialogs'}
                                render={WithSuspense(DialogsContainer)}
-                    />
-                    <Route path={'/users'}
-                           render={() => <UsersContainer/>}
-                    />
-                    <Route render={() => <Music/>} path={'/music'}/>
+                        />
+                        <Route path={'/users'}
+                               render={() => <UsersContainer/>}
+                        />
+                        <Route path={'/music'}
+                               render={() => <Music/>}
+                        />
+                        <Route path={'*'}
+                               render={() => <div> Sorry, Page NOT FOUND</div>}
+                        />
+                    </Switch>
                 </div>
             </div>
         );
