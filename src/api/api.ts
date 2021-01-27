@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {UserType} from '../redux/users-reducer';
+import {FilterUserType, UserType} from '../redux/users-reducer';
 import {authDataType} from '../redux/auth-reducer';
 import {UserProfilePhotosType, UserProfileType} from '../redux/profile-reducer';
 
@@ -11,8 +11,10 @@ const instance = axios.create({
 })
 
 export const usersAPI = {
-    getUsers(currentPage: number, pageSize: number) {
-        return instance.get<GetItemsType>(`users?page=${currentPage}&count=${pageSize}`)
+    getUsers(currentPage = 1, pageSize = 5, searchUserName: string = '', friend: null | boolean = null) {
+        return instance.get<GetItemsType>(
+            `users?page=${currentPage}&count=${pageSize}&term=${searchUserName}`
+            + (friend === null ? '' : `&friend=${friend}` ))
             .then(response => response.data)
     },
 

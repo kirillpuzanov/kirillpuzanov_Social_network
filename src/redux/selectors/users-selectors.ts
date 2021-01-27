@@ -1,4 +1,4 @@
-import {AppStateType} from './redux-store';
+import {AppStateType} from '../redux-store';
 import {createSelector} from 'reselect';
 
 
@@ -27,5 +27,8 @@ export const getIsFetching = (state: AppStateType) => {
 
 export const getFollowingInProgress = (state: AppStateType) => {
     return state.usersPage.followingInProgress
+}
+export const getUsersFilter = (state: AppStateType) => {
+    return state.usersPage.filter
 }
 

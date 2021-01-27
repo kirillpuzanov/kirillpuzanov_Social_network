@@ -1,8 +1,8 @@
 //   1 исходные данныу
 //  action , производим изменение
 //  exptect , проверка результатов
-import {followTC, initialStateUsersType, usersActions, usersReducer} from './users-reducer';
-import {ResponseType, ResultCodesEnum, usersAPI} from '../api/api';
+import {followTC, initialStateUsersType, usersActions, usersReducer} from '../users-reducer';
+import {ResponseType, ResultCodesEnum, usersAPI} from '../../api/api';
 
 jest.mock('../api/api');
 
@@ -50,6 +50,10 @@ beforeEach( ()=> {
         isFetching: false,
         followingInProgress: [],
         userId: '',
+        filter: {
+            searchUserName: '',
+            friend: null as null | boolean,
+        }
     }
 })
 
