@@ -114,7 +114,7 @@ export const followTC = (userId: string): thunkType => {
     }
 }
 
-export const unfollowTC = (userId: string): thunkType => {
+export const unFollowTC = (userId: string): thunkType => {
     return async (dispatch) => {
         let apiMethod = usersAPI.unfollow.bind(usersAPI);
         let actionCreator = usersActions.unFollowSuccessAC;

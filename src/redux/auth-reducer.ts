@@ -11,7 +11,7 @@ const initialState: AuthStateType = {
     login: null,
     isFetching: null,
     isAuth: false,
-    capthaUrl: null,
+    captchaUrl: null,
 }
 
 export const authReducer = (state = initialState, action: authActionsType): AuthStateType => {
@@ -26,7 +26,7 @@ export const authReducer = (state = initialState, action: authActionsType): Auth
                 isAuth: action.isAuth,
             }
         case '/AUTH/SET-CAPTHA-SUCCESS':
-            return {...state, capthaUrl: action.capthaUrl}
+            return {...state, captchaUrl: action.captchaUrl}
         default:
             return state;
     }
@@ -37,7 +37,7 @@ export type authActionsType = InferActionsTypes<typeof authActions>
 
 export const authActions = {
     setAuthUserDataAC: (data: authDataType, isAuth: boolean) => ({type: '/AUTH/SET-USER-DATA', data, isAuth} as const),
-    setCapthaUrl: (capthaUrl: string) => ({type: '/AUTH/SET-CAPTHA-SUCCESS', capthaUrl} as const),
+    setCaptchaUrl: (captchaUrl: string) => ({type: '/AUTH/SET-CAPTHA-SUCCESS', captchaUrl} as const),
 
 }
 
@@ -52,6 +52,7 @@ export const getAuthUserDataTC = (): thunkType => async (dispatch) => {
 }
 
 export const loginTC = (email: string, password: string, rememberMe: boolean,captcha:string): thunkType => async (dispatch) => {
+    debugger
     let response = await authAPI.login(email, password, rememberMe,captcha);
     if (response.resultCode === ResultCodesEnum.Success) {
         dispatch(getAuthUserDataTC())
@@ -72,7 +73,7 @@ export const logoutTC = (): thunkType => async (dispatch) => {
 
 export const getCapthaUrlTC = (): thunkType => async (dispatch) => {
     const response = await securityAPI.getCaptchaUrl()
-    dispatch(authActions.setCapthaUrl(response.url))
+    dispatch(authActions.setCaptchaUrl(response.url))
 }
 
 
@@ -83,10 +84,11 @@ export type AuthStateType = {
     login: null | string
     isFetching: null | boolean
     isAuth: boolean
-    capthaUrl: null | string
+    captchaUrl: null | string
 }
 export type authDataType = {
     id: null | number
     email: null | string
     login: null | string
 }
+

@@ -1,12 +1,12 @@
 import React from 'react';
 import './App.css';
 import {NavBar} from './Components/NavBar/NavBar'
-import {HashRouter, Route, withRouter, Switch, Redirect} from 'react-router-dom';
+import {HashRouter, Redirect, Route, Switch, withRouter} from 'react-router-dom';
 import {Music} from './Components/Music/Music';
-import UsersContainer from './Components/Users/UsersContainer';
+import {UsersPage} from './Components/Users/UsersContainer';
 import ProfileContainer from './Components/Profile/ProfileContainer';
 import HeaderContainer from './Components/Header/HeaderContainer';
-import LoginPage from './Components/Login/Login';
+import {LoginPage} from './Components/Login/Login';
 import {connect, Provider} from 'react-redux';
 import {AppStateType, store} from './redux/redux-store';
 import {initializeAppTC} from './redux/app-reducer';
@@ -44,7 +44,7 @@ class App extends React.Component<mapStateToPropsType & mapDispatchToPropsType> 
                                render={WithSuspense(DialogsContainer)}
                         />
                         <Route path={'/users'}
-                               render={() => <UsersContainer/>}
+                               render={() => <UsersPage/>}
                         />
                         <Route path={'/music'}
                                render={() => <Music/>}

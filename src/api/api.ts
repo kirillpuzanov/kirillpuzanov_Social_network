@@ -14,7 +14,7 @@ export const usersAPI = {
     getUsers(currentPage = 1, pageSize = 5, searchUserName: string = '', friend: null | boolean = null) {
         return instance.get<GetItemsType>(
             `users?page=${currentPage}&count=${pageSize}&term=${searchUserName}`
-            + (friend === null ? '' : `&friend=${friend}` ))
+            + (friend === null ? '' : `&friend=${friend}`))
             .then(response => response.data)
     },
 
@@ -35,9 +35,10 @@ export const authAPI = {
         return instance.get<ResponseType<authDataType>>('auth/me')
             .then(response => response.data)
     },
-    login(email: string, password: string, rememberMe = false, captcha: string) {
+    login(email: string, password: string, rememberMe = false, captcha: string = '') {
         return instance.post<ResponseType<LoginResponseDataType, ResultCodesEnum | ResultCodeForCapcthaEnum>>('auth/login', {
             email,
+            password,
             rememberMe,
             captcha
         }).then(response => response.data)

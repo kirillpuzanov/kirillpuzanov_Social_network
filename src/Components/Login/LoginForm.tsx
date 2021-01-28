@@ -11,12 +11,13 @@ export type LoginFormDataType = {
     captcha: string
 }
 type Iprops = {
-    capthaUrl: string | null
+    captchaUrl: string | null
 }
 
 const LoginForm: React.FC<InjectedFormProps<LoginFormDataType, Iprops> & Iprops> = (props) => {
     const {handleSubmit, error} = props;
     return (
+
         <form onSubmit={handleSubmit}>
             <div>
                 <Field component={Input}
@@ -43,8 +44,8 @@ const LoginForm: React.FC<InjectedFormProps<LoginFormDataType, Iprops> & Iprops>
                        name='rememberMe'
                 /> Remember me
             </div>
-            {props.capthaUrl && <img src={props.capthaUrl}/>}
-            {props.capthaUrl &&
+            {props.captchaUrl && <img src={props.captchaUrl}/>}
+            {props.captchaUrl &&
             <div>
                <Field component='input'
                       type="text"
