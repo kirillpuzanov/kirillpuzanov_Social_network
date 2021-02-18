@@ -2,9 +2,8 @@ import React from 'react';
 import './App.css';
 import {NavBar} from './Components/NavBar/NavBar'
 import {HashRouter, Redirect, Route, Switch, withRouter} from 'react-router-dom';
-import {Music} from './Components/Music/Music';
 import {UsersPage} from './Components/Users/UsersContainer';
-import ProfileContainer from './Components/Profile/ProfileContainer';
+
 import HeaderContainer from './Components/Header/HeaderContainer';
 import {LoginPage} from './Components/Login/Login';
 import {connect, Provider} from 'react-redux';
@@ -13,8 +12,12 @@ import {initializeAppTC} from './redux/app-reducer';
 import {compose} from 'redux';
 import {Preloader} from './common/Preloader/Preloader';
 import {WithSuspense} from './hoc/WithSuspense';
+import {ChatPage} from './Components/chatPage/chatPage';
 
+
+// Для React.lazy  нужен дэфолтный экспорт компоненты !!!! + обертка WithSuspense (для прелоадера)
 const DialogsContainer = React.lazy(() => import('./Components/Dialogs/DialogsContainer'));
+const ProfileContainer = React.lazy(() => import('./Components/Profile/ProfileContainer'));
 
 class App extends React.Component<mapStateToPropsType & mapDispatchToPropsType> {
 
@@ -46,9 +49,10 @@ class App extends React.Component<mapStateToPropsType & mapDispatchToPropsType> 
                         <Route path={'/users'}
                                render={() => <UsersPage/>}
                         />
-                        <Route path={'/music'}
-                               render={() => <Music/>}
+                        <Route path={'/chat'}
+                               render={() => <ChatPage/>}
                         />
+
                         <Route path={'*'}
                                render={() => <div> Sorry, Page NOT FOUND</div>}
                         />

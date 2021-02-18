@@ -51,7 +51,7 @@ beforeEach( ()=> {
         followingInProgress: [],
         userId: '',
         filter: {
-            searchUserName: '',
+            term: '',
             friend: null as null | boolean,
         }
     }

@@ -13,7 +13,7 @@ const initialStateUsers = {
     followingInProgress: [] as Array<string>,
     userId: '',
     filter: {
-        searchUserName: '',
+        term: '',
         friend: null as null | boolean,
     }
 }
@@ -90,7 +90,7 @@ export const getUsersTC = (currentPage: number,
     dispatch(usersActions.setCurrentPageAC(currentPage))
     dispatch(usersActions.setFilter(filter))
 
-    let response = await usersAPI.getUsers(currentPage, pageSize, filter.searchUserName, filter.friend)
+    let response = await usersAPI.getUsers(currentPage, pageSize, filter.term, filter.friend)
     dispatch(usersActions.toggleIsFetchingAC(false))
     dispatch(usersActions.setUsersAC(response.items))
     dispatch(usersActions.setTotalUsersCountAC(response.totalCount))

@@ -12,7 +12,7 @@ export function NavBar() {
             </div>
             <div className={s.item}>
                 <NavLink to="/dialogs" activeClassName={s.activeLink}>
-                    Messages
+                    Dialogs
                 </NavLink>
             </div>
             <div className={s.item}>
@@ -21,11 +21,15 @@ export function NavBar() {
                 </NavLink>
             </div>
             <div className={s.item}>
+                <NavLink to='/chat' activeClassName={s.activeLink}>
+                    DevChat
+                </NavLink>
+            </div>
+            <div className={s.item}>
                 <NavLink to="/music" activeClassName={s.activeLink}>
                     Music
                 </NavLink>
             </div>
-
         </nav>
     )
 }

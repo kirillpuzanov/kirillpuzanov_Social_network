@@ -44,7 +44,7 @@ const LoginForm: React.FC<InjectedFormProps<LoginFormDataType, Iprops> & Iprops>
                        name='rememberMe'
                 /> Remember me
             </div>
-            {props.captchaUrl && <img src={props.captchaUrl}/>}
+            {props.captchaUrl && <img src={props.captchaUrl} alt={'captcha img'}/>}
             {props.captchaUrl &&
             <div>
                <Field component='input'

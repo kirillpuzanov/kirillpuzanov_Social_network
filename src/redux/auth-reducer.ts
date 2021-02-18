@@ -42,7 +42,7 @@ export const authActions = {
 }
 
 //thunk's
-type thunkType = ThunkAction<any, AppStateType, unknown, authActionsType | FormAction>
+ type thunkType = ThunkAction<any, AppStateType, unknown, authActionsType | FormAction>
 
 export const getAuthUserDataTC = (): thunkType => async (dispatch) => {
     let response = await authAPI.authMe();
@@ -52,7 +52,6 @@ export const getAuthUserDataTC = (): thunkType => async (dispatch) => {
 }
 
 export const loginTC = (email: string, password: string, rememberMe: boolean,captcha:string): thunkType => async (dispatch) => {
-    debugger
     let response = await authAPI.login(email, password, rememberMe,captcha);
     if (response.resultCode === ResultCodesEnum.Success) {
         dispatch(getAuthUserDataTC())

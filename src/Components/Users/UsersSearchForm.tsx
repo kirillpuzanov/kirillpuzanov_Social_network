@@ -12,7 +12,7 @@ export const UsersSearchForm: React.FC<userFormPropsType> = React.memo((props) =
     const submit = (values: UsersSearchFormType,
                     {setSubmitting}: { setSubmitting: (isSubmitting: boolean) => void }) => {
         const filter = {
-            searchUserName: values.searchUserName,
+            term: values.term,
             friend: values.friend === 'null' ? null : values.friend === 'true'
         }
         props.onFilterChanged(filter)
@@ -24,13 +24,13 @@ export const UsersSearchForm: React.FC<userFormPropsType> = React.memo((props) =
         <div>
             <Formik
                 enableReinitialize
-                initialValues={{searchUserName: filter.searchUserName, friend: String(filter.friend) as FriendFormType}}
+                initialValues={{term: filter.term, friend: String(filter.friend) as FriendFormType}}
                 validate={usersSearchFormValidate}
                 onSubmit={submit}
             >
                 {({isSubmitting}) => (
                     <Form>
-                        <Field type="text" name="searchUserName"/>
+                        <Field type="text" name="term"/>
                         <Field name='friend' as='select'>
                             <option value='null'> All</option>
                             <option value='true'> Only Followed</option>
@@ -42,16 +42,15 @@ export const UsersSearchForm: React.FC<userFormPropsType> = React.memo((props) =
                     </Form>
                 )}
             </Formik>
-
         </div>
     )
 })
 type UsersSearchFormType = {
-    searchUserName: string
-    friend: 'true' | 'false' | 'null'
+    term: string
+    friend: FriendFormType
 }
+type FriendFormType = 'true' | 'false' | 'null'
 type userFormPropsType = {
     onFilterChanged: (filter: FilterUserType) => void
 }
 
-type FriendFormType = 'true' | 'false' | 'null'
