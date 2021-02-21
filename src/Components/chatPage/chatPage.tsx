@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {ChatMessageType} from '../../api/chat-api';
+import React, {useEffect, useRef, useState} from 'react';
+import {ChatMessageType, StatusChatType} from '../../api/chat-api';
 import {useDispatch, useSelector} from 'react-redux';
 import {sendMessage, startMessagesListening, stopMessagesListening} from '../../redux/chat-reducer';
 import {AppStateType} from '../../redux/redux-store';
@@ -18,6 +18,7 @@ const Chat: React.FC = () => {
     useEffect(() => {
         dispatch(startMessagesListening())
         return () => {
+
             dispatch(stopMessagesListening())
         }
     }, [dispatch])
@@ -35,27 +36,44 @@ const Chat: React.FC = () => {
     )
 }
 
-const Messages: React.FC = () => {
-
+const Messages: React.FC = React.memo(() => {
+    const messagesAnchorRef = useRef<HTMLDivElement>(null)
     const messages = useSelector<AppStateType, ChatMessageType[]>(s => s.chat.messages)
+    const [isAutoScroll, setIsAutoScroll] = useState<boolean>(true)
+
+    const scrollHandler = (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
+        const el = e.currentTarget;
+        if (Math.abs((el.scrollHeight - el.scrollTop) - el.clientHeight) < 200) {
+            !isAutoScroll && setIsAutoScroll(true)
+        } else {
+            isAutoScroll && setIsAutoScroll(false)
+        }
+    }
+
+    useEffect(() => {
+        if (isAutoScroll) {
+            messagesAnchorRef.current?.scrollIntoView({behavior: 'smooth'})
+        }
+    }, [isAutoScroll,messages])
+
 
     const style = {
         height: '400px',
         overflowY: 'auto',
         marginBottom: '30px'
     } as React.CSSProperties
-
-    return <div style={style}>
+    return <div style={style} onScroll={scrollHandler}>
         {
             messages.map((el) => <div key={el.id}>
                 <Message message={el}/>
                 <hr/>
+                <div ref={messagesAnchorRef}></div>
             </div>)
         }
     </div>
-}
+})
 
-const Message: React.FC<{ message: ChatMessageType }> = (props) => {
+const Message: React.FC<{ message: ChatMessageType }> = React.memo((props) => {
     const {photo, userName, message} = props.message
     const styleWrap = {
         display: 'flex',
@@ -70,10 +88,11 @@ const Message: React.FC<{ message: ChatMessageType }> = (props) => {
             <span style={{textAlign: 'left'}}>{message}</span>
         </div>
     </div>
-}
+})
 
 const AddMessageForm = () => {
     const [myMessage, setMyMessage] = useState<string>('')
+    const status = useSelector<AppStateType, StatusChatType>(s => s.chat.status)
     const dispatch = useDispatch();
     const sendMessageHandler = () => {
         if (!myMessage) return
@@ -84,7 +103,7 @@ const AddMessageForm = () => {
     return <div>
         <textarea onChange={(e) => setMyMessage(e.currentTarget.value)} value={myMessage}></textarea>
         <div>
-            <button  onClick={sendMessageHandler}> Отправить</button>
+            <button disabled={status !== 'ready'} onClick={sendMessageHandler}> Отправить</button>
         </div>
     </div>
 }
