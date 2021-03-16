@@ -39,7 +39,7 @@ class ProfileContainer extends React.PureComponent<ProfileContainerTypeWithRoute
 
     componentDidUpdate(prevProps: Readonly<ProfileContainerTypeWithRouter>, prevState: Readonly<{}>) {
 
-        // componentDidMount - метод жизненного цикла контейнерной компоненты,  вызывается при каждом изменении Props или State
+        // componentDidUpdate - метод жизненного цикла контейнерной компоненты,  вызывается при каждом изменении Props или State
         if (this.props.match.params.userId !== prevProps.match.params.userId) {
             this.refreshProfile()
         }
